@@ -14,7 +14,7 @@
       --r:#ff6b7a;--g:#43e097;--y:#ffd166;--p:#b67cff;--o:#ff9f5b;--t:#4ecdc4;
       --txt:#eeeeff;--sec:#7878aa;--dim:#3a3a5a;--rad:18px;
     }
-    .ht{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:var(--bg);color:var(--txt);min-height:600px;padding:0 0 40px;position:relative;overflow:hidden;}
+    .ht{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;padding:0 0 40px;position:relative;overflow-x:hidden;}
     .ht::before{content:'';position:absolute;width:300px;height:300px;background:rgba(124,111,255,.07);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none}
     .ht::after{content:'';position:absolute;width:220px;height:220px;background:rgba(93,224,197,.05);border-radius:50%;filter:blur(80px);bottom:120px;left:-60px;pointer-events:none}
 
@@ -57,58 +57,41 @@
     .cdesc{font-size:11px;color:var(--sec);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .csk{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--dim);margin-top:3px;font-weight:500}
 
-    /* CHECKBOX */
+    /* CMT & CHECKBOX */
+    .actions { display: flex; align-items: center; gap: 8px; }
+    .cmt-btn { width: 30px; height: 30px; border-radius: 10px; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--sec); transition: all 0.2s; }
+    .cmt-btn:active { transform: scale(0.9); background: var(--dim); }
+    .cmt-btn.has-cmt { color: var(--acc); background: var(--acc-g); }
+    
     .ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--cc,var(--acc));display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;transition:background .3s,border-color .3s}
     .ck.on{background:var(--cc,var(--acc));border-color:var(--cc,var(--acc))}
     .ck .tk{opacity:0;transform:scale(.4) rotate(-15deg);transition:opacity .25s,transform .25s;font-size:13px;color:#0c0c12;font-weight:900}
     .ck.on .tk{opacity:1;transform:scale(1) rotate(0)}
     @keyframes rpl{from{transform:scale(0);opacity:.6}to{transform:scale(2.8);opacity:0}}
     .rpl{position:absolute;border-radius:50%;width:100%;height:100%;background:var(--cc,var(--acc));animation:rpl .5s ease-out forwards;pointer-events:none}
-    @keyframes ci-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
-    .hc.new{animation:ci-in .38s cubic-bezier(.2,.8,.2,1)}
-    @keyframes ci-out{to{opacity:0;transform:scale(.9) translateX(36px);max-height:0;margin:0;padding:0}}
-    .hc.bye{animation:ci-out .3s ease forwards;pointer-events:none}
 
-    /* LONG PRESS */
-    .hc.pressing{transform:scale(.96);filter:brightness(.82)}
-
-    /* EMPTY */
-    .empty{text-align:center;padding:36px 20px;color:var(--dim)}
-    .empty .ei{font-size:30px;margin-bottom:8px}
-    .empty p{font-size:12px;color:var(--sec)}
-
-    /* BANNER */
+    /* BANNER & DIVIDER */
     .banner{margin:14px 20px;background:linear-gradient(135deg,var(--acc),#a78bfa);border-radius:var(--rad);padding:13px 16px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none;position:relative;z-index:1}
     .banner.on{opacity:1;transform:translateY(0);pointer-events:auto}
-    .bi{font-size:24px}
-    .bt h3{font-size:14px;font-weight:700}
-    .bt p{font-size:11px;color:rgba(255,255,255,.7)}
-
-    /* DIVIDER */
     .div{height:1px;background:rgba(255,255,255,.05);margin:20px 20px 0;position:relative;z-index:1}
 
-    /* GRID */
+    /* STATS & CALENDAR */
     .gs{padding:20px 20px 36px;position:relative;z-index:1}
+    .tabs{display: flex; gap: 8px; margin-bottom: 16px;}
+    .tab{padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; color: var(--sec); cursor: pointer; transition: 0.2s; border: 1px solid transparent;}
+    .tab.active{background: var(--acc-g); color: var(--acc); border-color: rgba(124,111,255,.3);}
+    
     .gh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
     .gt{font-size:15px;font-weight:700}
-    .gss{font-size:11px;color:var(--sec)}
-    .gl{display:flex;gap:5px;align-items:center;margin-bottom:12px}
-    .ld{width:7px;height:7px;border-radius:2px}
-    .ll{font-size:10px;color:var(--dim)}
-    .gsc{overflow-x:auto;padding-bottom:4px;scroll-behavior:smooth}
-    .ml{display:flex;gap:2px;margin-bottom:3px;position:relative}
-    .mc{font-size:8px;color:var(--dim);font-weight:600;letter-spacing:.04em;position:absolute}
-    .cg{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;gap:2.5px}
-    .gc{width:10px;height:10px;border-radius:2px;background:var(--card2)}
-    .gc.l1{background:#7c6fff33}
-    .gc.l2{background:#7c6fff66}
-    .gc.l3{background:#7c6fff99}
-    .gc.l4{background:var(--acc)}
-    .gc.td{outline:2px solid var(--acc);outline-offset:1px}
-    .gc.td.ac{background:var(--acc)!important;animation:ptd 1.8s ease-in-out infinite}
-    @keyframes ptd{0%,100%{box-shadow:0 0 7px var(--acc)}50%{box-shadow:0 0 14px var(--acc),0 0 24px var(--acc-g)}}
-
-    /* MODAL */
+    
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-lbl { text-align: center; font-size: 10px; font-weight: 600; color: var(--sec); margin-bottom: 4px; }
+    .cal-cell { aspect-ratio: 1; border-radius: 10px; background: var(--card2); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s; position: relative; overflow: hidden; }
+    .cal-cell.today { outline: 1.5px solid var(--acc); outline-offset: 2px; }
+    .cal-num { font-size: 12px; font-weight: 700; z-index: 2;}
+    .cal-pct { font-size: 9px; color: rgba(255,255,255,0.7); font-weight: 600; z-index: 2; margin-top: 1px;}
+    
+    /* MODALS */
     .mo{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s}
     .mo.on{opacity:1;pointer-events:auto}
     .ms{width:100%;max-width:440px;background:var(--card);border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:10px 18px max(18px,env(safe-area-inset-bottom)) 18px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.9,.25,1)}
@@ -119,42 +102,34 @@
     .fl{font-size:11px;font-weight:600;color:var(--sec);letter-spacing:.04em;text-transform:uppercase;margin-bottom:7px;display:block}
     .fb{margin-bottom:16px}
     .ti{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.07);border-radius:13px;padding:12px 13px;font-size:14px;color:var(--txt);font-family:inherit;outline:none;transition:border-color .2s}
-    .ti::placeholder{color:var(--dim)}
     .ti:focus{border-color:var(--pk,var(--acc))}
     .eg{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-    .eo{aspect-ratio:1;border-radius:11px;background:var(--card2);border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:transform .15s,border-color .2s}
-    .eo:active{transform:scale(.87)}
-    .eo.sel{border-color:var(--pk,var(--acc));background:rgba(124,111,255,.12)}
+    .eo{aspect-ratio:1;border-radius:11px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;}
+    .eo.sel{border:1.5px solid var(--acc);background:var(--acc-g)}
     .cr{display:flex;gap:9px;flex-wrap:wrap}
-    .co{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;position:relative;flex-shrink:0;transition:transform .15s,border-color .2s}
-    .co:active{transform:scale(.87)}
+    .co{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;}
     .co.sel{border-color:#fff}
     .co.sel::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#0c0c12}
     .ma{display:flex;gap:9px;margin-top:20px}
-    .btn{flex:1;padding:13px;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:transform .15s,opacity .2s}
+    .btn{flex:1;padding:13px;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:transform .15s;}
     .btn:active{transform:scale(.97)}
     .btn-p{background:var(--pk,var(--acc));color:#0c0c12}
-    .btn-p:disabled{opacity:.35;cursor:not-allowed}
     .btn-g{background:var(--card2);color:var(--sec)}
     
-    /* DELETE */
-    .dc{text-align:center;padding-top:4px}
-    .dci{width:52px;height:52px;border-radius:50%;background:rgba(255,107,122,.12);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px}
-    .btn-d{background:#ff6b7a;color:#fff}
-
     /* TOAST */
-    .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:12px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity .28s,transform .28s;white-space:nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.5);}
+    .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:12px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity .28s,transform .28s;}
     .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   </style>
 </head>
 <body>
 
 <div class="ht" id="ht">
+  <!-- HEADER -->
   <div class="hd">
     <div class="hd-left">
       <div class="eyebrow" id="eyebrow">Yuklanmoqda...</div>
       <div class="htitle">Odatlar <span style="font-size:22px">🎯</span>
-        <div class="add-b" id="openAdd" title="Yangi odat qo'shish">＋</div>
+        <div class="add-b" id="openAdd">＋</div>
       </div>
       <div class="dstr" id="dstr"></div>
     </div>
@@ -167,6 +142,7 @@
     </div>
   </div>
 
+  <!-- STATUS BAR -->
   <div class="st-bar">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
@@ -180,34 +156,32 @@
   <div class="sl">BUGUNGI VAZIFALAR</div>
   <div class="cl" id="hl"></div>
 
+  <!-- BANNER -->
   <div style="height:14px"></div>
   <div class="banner" id="ban">
     <div class="bi">🏆</div>
-    <div class="bt"><h3>Barcha odatlar bajarildi!</h3><p>Bugun siz g'olib bo'ldingiz 🎉</p></div>
+    <div><h3>Barcha odatlar bajarildi!</h3><p>Bugun siz g'olib bo'ldingiz 🎉</p></div>
   </div>
 
   <div class="div"></div>
 
+  <!-- CALENDAR & STATS (YANGILANGAN QISM) -->
   <div class="gs">
+    <div class="tabs">
+      <div class="tab active">Oylik</div>
+      <div class="tab">Haftalik</div>
+      <div class="tab">Yillik</div>
+    </div>
     <div class="gh">
-      <div class="gt">Yillik faollik</div>
-      <div class="gss" id="stk">— kun ketma-ket</div>
+      <div class="gt" id="monthNameTitle">Statistika</div>
     </div>
-    <div class="gl">
-      <div class="ld" style="background:var(--card2)"></div><div class="ll">0</div>
-      <div class="ld" style="background:#7c6fff33"></div>
-      <div class="ld" style="background:#7c6fff66"></div>
-      <div class="ld" style="background:#7c6fff99"></div>
-      <div class="ld" style="background:var(--acc)"></div>
-      <div class="ll">Ko'proq</div>
-    </div>
-    <div class="gsc" id="gsc">
-      <div style="position:relative;height:14px;margin-bottom:3px" id="mlw"></div>
-      <div class="cg" id="cg"></div>
-    </div>
+    
+    <!-- Kalendar Katakchalari -->
+    <div class="cal-grid" id="calGrid"></div>
   </div>
 </div>
 
+<!-- ADD MODAL -->
 <div class="mo" id="am">
   <div class="ms" id="ams">
     <div class="mh"></div>
@@ -224,15 +198,16 @@
   </div>
 </div>
 
-<div class="mo" id="dm">
-  <div class="ms dc">
+<!-- COMMENT MODAL (YANGI QO'SHILDI) -->
+<div class="mo" id="cm">
+  <div class="ms">
     <div class="mh"></div>
-    <div class="dci">🗑️</div>
-    <div class="mtit" id="dtit">O'chirilsinmi?</div>
-    <div class="msub" id="dsub">Bu amalni qaytarib bo'lmaydi.</div>
+    <div class="mtit">Izoh yozish 📝</div>
+    <div class="msub">Bugungi bajarilgan yoki bajarilmagan odatingiz sababini yozing.</div>
+    <div class="fb"><textarea class="ti" id="cval" rows="3" placeholder="Bugun juda charchagandim..." style="resize:none"></textarea></div>
     <div class="ma">
-      <button class="btn btn-g" id="dcn">Bekor</button>
-      <button class="btn btn-d" id="dok">O'chirish</button>
+      <button class="btn btn-g" id="ccn">Bekor</button>
+      <button class="btn btn-p" style="--pk:#7c6fff" id="cok">Saqlash</button>
     </div>
   </div>
 </div>
@@ -241,7 +216,7 @@
 
 <script>
 (async function(){
-  // ⚠️ SHU YERGA O'Z RENDER/REPLIT LINKINGIZNI YOZING
+  // ⚠️ SHU YERGA SERVERINGIZ LINKINI QO'YING
   const BACKEND_URL = "https://SIZNING_RENDER_LINKINGIZ.onrender.com"; 
   const TELEGRAM_ID = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 5471176468;
 
@@ -256,54 +231,55 @@
     {c:'#4ecdc4',d:'rgba(78,205,196,.14)'},
   ];
   const EM=['🏃‍♂️','💻','🧘','💰','📚','🎨','🎵','💧','🥗','😴','✍️','🚭','🧹','🌱','🙏','🚴','🏋️','🧠','📝','☀️','🎯','🎭'];
-  
+
   const today=new Date();
   const dk=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
   const DAYS=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
   const MONTHS=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
 
   document.getElementById('dstr').textContent=`${DAYS[today.getDay()]}, ${today.getDate()} ${MONTHS[today.getMonth()]} ${today.getFullYear()}`;
+  document.getElementById('monthNameTitle').textContent=`Oylik Statistika (${MONTHS[today.getMonth()]})`;
 
   let HABITS = []; 
   let DM = {};
+  let MONTHLY_STATS = {};
   let DONE = new Set();
-
   const hl=document.getElementById('hl');
 
-  // SERVERDAN YUKLASH
+  // LOAD DATA FROM API
   async function loadData() {
     try {
+      // 1. Odatlarni va tarixni tortish
       const res = await fetch(`${BACKEND_URL}/api/get_habits_data?user_id=${TELEGRAM_ID}`);
       const data = await res.json();
-      
-      // Backend formatini Frontend formatiga o'tkazish
       HABITS = (data.habits || []).map(h => ({
-        id: h['Odat ID'],
-        name: h['Nomi'],
-        desc: h['Tavsifi'],
-        icon: h['Emoji'],
-        color: h['Rangi'] || '#7c6fff',
-        dim: (h['Rangi'] || '#7c6fff') + '22',
-        streak: 0 
+        id: h['Odat ID'], name: h['Nomi'], desc: h['Tavsifi'],
+        icon: h['Emoji'], color: h['Rangi'] || '#7c6fff', dim: (h['Rangi'] || '#7c6fff') + '22'
       }));
-      
       DM = data.history || {};
       if(!DM[dk]) DM[dk] = [];
-      
       DONE.clear();
       DM[dk].forEach(id => DONE.add(id));
-      
+
+      // 2. Oylik Kalendar Statistikasini tortish
+      try {
+        const statsRes = await fetch(`${BACKEND_URL}/api/get_monthly_stats?user_id=${TELEGRAM_ID}`);
+        const statsData = await statsRes.json();
+        MONTHLY_STATS = statsData.monthly_stats || {};
+      } catch(e) { console.error("Stats error", e); }
+
       document.getElementById('eyebrow').textContent = "Bugungi kun";
       render(); 
       updateUI(); 
-      buildGrid();
+      buildCalendar(); // Grid o'rniga yangi Kalendar
     } catch(e) {
-      document.getElementById('eyebrow').textContent = "Tarmoq xatosi ⚠️";
+      document.getElementById('eyebrow').textContent = "Tarmoq xatosi";
       toast("Serverga ulanishda xato!");
     }
   }
 
-  function render(animId){
+  // RENDER HABITS
+  function render(){
     hl.innerHTML='';
     document.getElementById('tc').textContent=HABITS.length;
     if(!HABITS.length){
@@ -311,45 +287,33 @@
       return;
     }
     HABITS.forEach(h=>{
-      const streak=Object.values(DM).filter(a=>Array.isArray(a)&&a.includes(h.id)).length;
       const card=document.createElement('div');
-      card.className='hc'+(DONE.has(h.id)?' done':'')+(h.id===animId?' new':'');
+      card.className='hc'+(DONE.has(h.id)?' done':'');
       card.id='c-'+h.id;
       card.style.cssText=`--cc:${h.color};--cd:${h.dim}`;
       card.innerHTML=`
         <div class="ci">${h.icon}</div>
-        <div class="cb">
+        <div class="cb" onclick="toggle('${h.id}')">
           <div class="cn">${esc(h.name)}</div>
           <div class="cdesc">${esc(h.desc||'')}</div>
-          <div class="csk"><span style="font-size:12px">🔥</span>${streak} kunlik faollik</div>
         </div>
-        <div class="ck${DONE.has(h.id)?' on':''}" id="ck-${h.id}"><span class="tk">✓</span></div>`;
-      attachCard(card,h);
+        <div class="actions">
+          <div class="cmt-btn" onclick="openComment('${h.id}')">💬</div>
+          <div class="ck${DONE.has(h.id)?' on':''}" id="ck-${h.id}" onclick="toggle('${h.id}')"><span class="tk">✓</span></div>
+        </div>`;
       hl.appendChild(card);
     });
   }
 
   function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
-  const LP=540,MV=9;
-  function attachCard(card,h){
-    let t=null,sx=0,sy=0,fired=false;
-    const clr=()=>{clearTimeout(t);card.classList.remove('pressing');};
-    card.addEventListener('pointerdown',e=>{
-      fired=false;sx=e.clientX;sy=e.clientY;
-      card.classList.add('pressing');
-      t=setTimeout(()=>{fired=true;card.classList.remove('pressing');openDel(h);},LP);
-    });
-    card.addEventListener('pointermove',e=>{if(Math.abs(e.clientX-sx)>MV||Math.abs(e.clientY-sy)>MV)clr();});
-    card.addEventListener('pointerup',()=>{clr();if(!fired)toggle(h.id,card);});
-    card.addEventListener('pointerleave',clr);
-    card.addEventListener('pointercancel',clr);
-    card.addEventListener('contextmenu',e=>e.preventDefault());
-  }
-
-  async function toggle(id,card){
+  // TOGGLE HABIT
+  async function toggle(id){
+    const card=document.getElementById('c-'+id);
     const ck=document.getElementById('ck-'+id);
-    if(DONE.has(id)){
+    const wasDone = DONE.has(id);
+
+    if(wasDone){
         DONE.delete(id);ck.classList.remove('on');card.classList.remove('done');
     } else {
       DONE.add(id);ck.classList.add('on');card.classList.add('done');
@@ -358,21 +322,24 @@
       try{window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');}catch(e){}
     }
     
-    // UI ni srazu yangilaymiz (tez ishlashi uchun)
     DM[dk]=Array.from(DONE);
-    updateUI();
-    buildGrid();
+    
+    // Oylik statistikani lokal yangilash (tezkor UI uchun)
+    const bugunSana = today.getDate();
+    if(wasDone) MONTHLY_STATS[bugunSana] = Math.max(0, (MONTHLY_STATS[bugunSana]||1)-1);
+    else MONTHLY_STATS[bugunSana] = (MONTHLY_STATS[bugunSana]||0)+1;
 
-    // Orqa fonda API ga jo'natamiz
+    updateUI();
+    buildCalendar();
+
+    // Orqa fonda API ga jo'natish
     try {
         await fetch(`${BACKEND_URL}/api/toggle_habit`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: id, date: dk })
         });
-    } catch(e) {
-        toast("Saqlashda xato yuz berdi!");
-    }
+    } catch(e) { toast("Saqlashda xato yuz berdi!"); }
   }
 
   function updateUI(){
@@ -390,63 +357,51 @@
     document.getElementById('ban').classList.toggle('on',tot>0&&dn===tot);
   }
 
-  // GRID
-  function buildGrid(){
-    const cg=document.getElementById('cg'),mlw=document.getElementById('mlw');
-    cg.innerHTML='';mlw.innerHTML='';
-    const s=new Date(today);
-    s.setDate(s.getDate()-52*7+1);s.setDate(s.getDate()-s.getDay());
-    const totD=Math.round((today-s)/86400000)+7,wc=Math.ceil(totD/7);
-    const ms={};const cm=[];
-    for(let c=0;c<wc;c++){const cd=new Date(s);cd.setDate(s.getDate()+c*7);const mk=`${cd.getFullYear()}-${cd.getMonth()}`;if(!ms[mk]){ms[mk]=true;cm.push({c,m:cd.getMonth()});}}
-    const cw=13;
-    mlw.style.minWidth=(wc*cw)+'px';
-    cm.forEach(({c,m})=>{const ch=document.createElement('div');ch.className='mc';ch.textContent=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m];ch.style.left=(c*cw)+'px';mlw.appendChild(ch);});
-    let stk=0,tmp=0;
-    for(let c=0;c<wc;c++){
-      for(let r=0;r<7;r++){
-        const d=new Date(s);d.setDate(s.getDate()+c*7+r);
-        const cell=document.createElement('div');cell.className='gc';
-        const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-        const isT=key===dk,isFut=d>today&&!isT;
-        if(!isFut){
-          if(isT){
-            cell.id='td-cell';cell.classList.add('td');
-            if(DONE.size>0)cell.classList.add('ac');
-            const tot=Math.max(HABITS.length,1);
-            if(DONE.size===HABITS.length&&HABITS.length>0)cell.classList.add('l4');
-            else if(DONE.size/tot>=.66)cell.classList.add('l3');
-            else if(DONE.size/tot>=.33)cell.classList.add('l2');
-            else if(DONE.size>0)cell.classList.add('l1');
-          } else {
-            const pd=DM[key]||[];
-            const tot=Math.max(HABITS.length,1);
-            let lv=0;
-            if(pd.length/tot>=1)lv=4;
-            else if(pd.length/tot>=.66)lv=3;
-            else if(pd.length/tot>=.33)lv=2;
-            else if(pd.length>0)lv=1;
-            if(lv){cell.classList.add('l'+lv);tmp++;if(tmp>stk)stk=tmp;}
-            else tmp=0;
-          }
+  // YANI OYLIK KALENDAR VA FOIZLI STATISTIKA
+  function buildCalendar(){
+    const cg = document.getElementById('calGrid');
+    cg.innerHTML = '';
+
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const totHabits = Math.max(HABITS.length, 1);
+
+    // Haftaning kunlari
+    ['Dsh','Ssh','Chr','Pay','Jum','Shb','Yak'].forEach(day => {
+        cg.innerHTML += `<div class="day-lbl">${day}</div>`;
+    });
+
+    // Bosh joylar (oy boshlanishiga moslash)
+    let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+    for(let i=0; i<emptyCells; i++) cg.innerHTML += `<div></div>`;
+
+    for(let d=1; d<=daysInMonth; d++) {
+        const doneCount = MONTHLY_STATS[d] || 0;
+        const pct = Math.round((doneCount / totHabits) * 100);
+        
+        let bg = 'var(--card2)';
+        let fillStyle = '';
+        
+        // Foizga qarab rang to'qligi (Heatmap)
+        if(pct > 0) {
+            const opacity = Math.max(0.2, pct / 100);
+            fillStyle = `background: rgba(124, 111, 255, ${opacity});`;
         }
-        cell.title=`${d.getDate()} ${MONTHS[d.getMonth()]}`;
-        cg.appendChild(cell);
-      }
+
+        const isToday = d === today.getDate() ? 'today' : '';
+        
+        cg.innerHTML += `
+        <div class="cal-cell ${isToday}">
+            <div style="position:absolute; bottom:0; left:0; right:0; height:${pct}%; ${fillStyle} transition: height 0.5s ease-out;"></div>
+            <span class="cal-num">${d}</span>
+            ${pct > 0 ? `<span class="cal-pct">${pct}%</span>` : ''}
+        </div>`;
     }
-    document.getElementById('stk').textContent=`${stk} kun ketma-ket 🔥`;
-    setTimeout(()=>{const sc=document.getElementById('gsc');sc.scrollLeft=sc.scrollWidth;},60);
   }
 
-  // TOAST
-  let tt;
-  function toast(msg){
-    const el=document.getElementById('toast');
-    el.textContent=msg;el.classList.add('on');
-    clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),2200);
-  }
-
-  // ADD MODAL (API ulangan)
+  // ADD MODAL LOGIC
   const am=document.getElementById('am');
   let pe=EM[0],pc=PAL[0];
 
@@ -458,98 +413,67 @@
     const cr=document.getElementById('cr');cr.innerHTML='';
     PAL.forEach(p=>{const o=document.createElement('div');o.className='co'+(p.c===pc.c?' sel':'');o.style.background=p.c;o.onclick=()=>{pc=p;renderCR();applyPK();};cr.appendChild(o);});
   }
-  function applyPK(){const s=document.getElementById('ams');s.style.setProperty('--pk',pc.c);}
+  function applyPK(){document.getElementById('ams').style.setProperty('--pk',pc.c);}
 
   document.getElementById('openAdd').onclick=()=>{
     document.getElementById('iname').value='';
     document.getElementById('idesc').value='';
-    pe=EM[Math.floor(Math.random()*EM.length)];
-    pc=PAL[HABITS.length%PAL.length];
+    pe=EM[Math.floor(Math.random()*EM.length)]; pc=PAL[HABITS.length%PAL.length];
     renderEG();renderCR();applyPK();
     document.getElementById('aok').disabled=true;
     am.classList.add('on');
-    setTimeout(()=>document.getElementById('iname').focus(),320);
   };
   document.getElementById('acn').onclick=()=>am.classList.remove('on');
-  am.addEventListener('click',e=>{if(e.target===am)am.classList.remove('on');});
   document.getElementById('iname').addEventListener('input',e=>{document.getElementById('aok').disabled=!e.target.value.trim();});
   
-  document.getElementById('aok').onclick= async ()=>{
+  document.getElementById('aok').onclick = async ()=>{
     const n=document.getElementById('iname').value.trim();
     const d=document.getElementById('idesc').value.trim();
-    if(!n)return;
+    if(!n) return;
     
-    const btn = document.getElementById('aok');
-    btn.disabled = true;
-    btn.textContent = "Kuting...";
+    document.getElementById('aok').disabled = true;
+    document.getElementById('aok').textContent = "Kuting...";
 
     try {
         const res = await fetch(`${BACKEND_URL}/api/add_custom_habit`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: TELEGRAM_ID, name: n, desc: d, icon: pe, color: pc.c })
         });
-        
         if(res.ok) {
-            await loadData(); // Bazadan qayta yuklaymiz
+            await loadData();
             am.classList.remove('on');
             toast(`"${n}" qo'shildi ✅`);
             try{window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');}catch(e){}
         }
-    } catch(e) {
-        toast("Xatolik yuz berdi!");
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "Qo'shish";
-    }
+    } catch(e) { toast("Xatolik!"); }
+    document.getElementById('aok').textContent = "Qo'shish";
   };
 
-  // DELETE MODAL
-  const dm=document.getElementById('dm');let pd=null;
-  function openDel(h){
-    pd=h;
-    document.getElementById('dtit').textContent=`"${h.name}" o'chirilsinmi?`;
-    dm.classList.add('on');
+  // COMMENT MODAL LOGIC (Etap 1 tayyorgarlik)
+  const cm = document.getElementById('cm');
+  window.openComment = (id) => {
+    // Keyingi etapda API ga yozish uchun ID ni saqlab olamiz
+    cm.dataset.activeId = id; 
+    document.getElementById('cval').value = '';
+    cm.classList.add('on');
+  };
+  document.getElementById('ccn').onclick = () => cm.classList.remove('on');
+  document.getElementById('cok').onclick = () => {
+    // Hozircha faqat lokal tarzda pop-up yopiladi. Keyingi etapda bu yerga API yozamiz.
+    toast("Izoh saqlandi!");
+    cm.classList.remove('on');
+  };
+
+  // TOAST
+  let tt;
+  function toast(msg){
+    const el=document.getElementById('toast');
+    el.textContent=msg; el.classList.add('on');
+    clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('on'),2200);
   }
-  document.getElementById('dcn').onclick=()=>{dm.classList.remove('on');pd=null;};
-  dm.addEventListener('click',e=>{if(e.target===dm){dm.classList.remove('on');pd=null;}});
-  
-  document.getElementById('dok').onclick= async ()=>{
-    if(!pd)return;
-    const {id,name}=pd, card=document.getElementById('c-'+id);
-    
-    const finishDelete = () => {
-        HABITS=HABITS.filter(h=>h.id!==id);
-        DONE.delete(id);
-        DM[dk] = Array.from(DONE);
-        render(); updateUI(); buildGrid();
-        toast(`"${name}" o'chirildi 🗑️`);
-    };
 
-    try {
-        await fetch(`${BACKEND_URL}/api/delete_habit`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: id })
-        });
-        
-        if(card) {
-            card.classList.add('bye');
-            card.addEventListener('animationend', finishDelete, {once:true});
-        } else {
-            finishDelete();
-        }
-    } catch(e) {
-        toast("O'chirishda xatolik!");
-    }
-    
-    dm.classList.remove('on');
-    pd=null;
-  };
-
-  // START
+  // INIT
   loadData();
-  try{if(window.Telegram?.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}}catch(e){}
 })();
 </script>
 </body>
