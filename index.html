@@ -13,18 +13,10 @@
       --bg-card2:   #1A1A2E;
       --accent:     #6C63FF;
       --accent-glow:#6C63FF44;
-      --sport:      #FF6B6B;
-      --sport-dim:  #FF6B6B22;
-      --it:          #4ECDC4;
-      --it-dim:     #4ECDC422;
-      --spirit:     #FFE66D;
-      --spirit-dim: #FFE66D22;
-      --finance:    #06FFA5;
-      --finance-dim:#06FFA522;
-      --text-pri:    #F0F0FF;
-      --text-sec:    #8888AA;
-      --text-dim:    #44445A;
-      --radius:      20px;
+      --text-pri:   #F0F0FF;
+      --text-sec:   #8888AA;
+      --text-dim:   #44445A;
+      --radius:     20px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,8 +30,10 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 0; height: 0; }
 
+    /* ── HEADER ── */
     .header {
       position: sticky;
       top: 0;
@@ -52,163 +46,65 @@
     .title    { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-top: 2px; }
     .date-str { font-size: 13px; color: var(--text-sec); margin-top: 2px; }
 
-    .ring-wrap {
-      position: relative;
-      width: 80px;
-      height: 80px;
-      flex-shrink: 0;
-    }
+    /* ── PROGRESS RING ── */
+    .ring-wrap { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
     .ring-wrap svg { transform: rotate(-90deg); }
     .ring-bg  { fill: none; stroke: var(--bg-card2); stroke-width: 7; }
     .ring-fill{
-      fill: none;
-      stroke: var(--accent);
-      stroke-width: 7;
-      stroke-linecap: round;
-      stroke-dasharray: 201;
-      stroke-dashoffset: 201;
+      fill: none; stroke: var(--accent); stroke-width: 7; stroke-linecap: round;
+      stroke-dasharray: 201; stroke-dashoffset: 201;
       transition: stroke-dashoffset 0.6s cubic-bezier(.4,0,.2,1), stroke 0.4s;
       filter: drop-shadow(0 0 6px var(--accent));
     }
-    .ring-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-    }
+    .ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
     .ring-num  { font-size: 18px; font-weight: 800; line-height: 1; }
     .ring-sub  { font-size: 9px; color: var(--text-sec); font-weight: 600; letter-spacing: 0.05em; margin-top: 1px; }
 
+    /* ── STATUS BAR ── */
     .status-bar {
-      margin: 0 20px 20px;
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      border: 1px solid #ffffff08;
-      box-shadow: 0 4px 24px #00000040;
+      margin: 0 20px 20px; background: var(--bg-card); border-radius: var(--radius);
+      padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+      border: 1px solid #ffffff08; box-shadow: 0 4px 24px #00000040;
     }
     .status-text h2 { font-size: 17px; font-weight: 700; }
     .status-text p  { font-size: 13px; color: var(--text-sec); margin-top: 2px; }
-    .progress-track {
-      height: 4px;
-      background: var(--bg-card2);
-      border-radius: 99px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
+    .progress-track { height: 4px; background: var(--bg-card2); border-radius: 99px; margin-top: 10px; overflow: hidden; }
     .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #A78BFA);
-      border-radius: 99px;
-      transition: width 0.6s cubic-bezier(.4,0,.2,1);
-      box-shadow: 0 0 8px var(--accent-glow);
+      height: 100%; background: linear-gradient(90deg, var(--accent), #A78BFA); border-radius: 99px;
+      transition: width 0.6s cubic-bezier(.4,0,.2,1); box-shadow: 0 0 8px var(--accent-glow);
     }
 
-    .section-label {
-      padding: 0 20px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-sec);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+    .section-label { padding: 0 20px 10px; font-size: 12px; font-weight: 600; color: var(--text-sec); letter-spacing: 0.08em; text-transform: uppercase; }
 
+    /* ── HABIT CARD ── */
     .card-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
-
     .habit-card {
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      padding: 16px 16px 16px 18px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      border: 1px solid #ffffff06;
-      box-shadow: 0 2px 16px #00000030;
-      cursor: pointer;
-      transition: transform 0.18s, box-shadow 0.18s, border-color 0.3s, background 0.3s;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-card); border-radius: var(--radius); padding: 16px 16px 16px 18px;
+      display: flex; align-items: center; gap: 14px; border: 1px solid #ffffff06; box-shadow: 0 2px 16px #00000030;
+      cursor: pointer; transition: transform 0.18s, box-shadow 0.18s, border-color 0.3s, background 0.3s;
+      user-select: none; position: relative; overflow: hidden;
     }
-    .habit-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 4px;
-      border-radius: 4px 0 0 4px;
-      background: var(--card-color, var(--accent));
-      opacity: 0.8;
-    }
+    .habit-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 4px 0 0 4px; background: var(--card-color, var(--accent)); opacity: 0.8; }
     .habit-card:active { transform: scale(0.975); }
     .habit-card.done   { background: var(--card-bg-done, var(--bg-card)); border-color: var(--card-color, var(--accent))33; }
 
-    .card-icon {
-      width: 44px; height: 44px;
-      border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      background: var(--card-dim, var(--accent-glow));
-      flex-shrink: 0;
-      transition: background 0.3s;
-    }
+    .card-icon { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 22px; background: var(--card-dim, var(--accent-glow)); flex-shrink: 0; }
     .card-body { flex: 1; min-width: 0; }
     .card-name { font-size: 15px; font-weight: 600; }
     .card-desc { font-size: 12px; color: var(--text-sec); margin-top: 2px; }
-    .card-streak {
-      display: flex; align-items: center; gap: 4px;
-      font-size: 11px; color: var(--text-dim);
-      margin-top: 4px; font-weight: 500;
-    }
-    .card-streak span { font-size: 13px; }
+    
+    /* ── CHECKBOX ── */
+    .check-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--card-color, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.3s, border-color 0.3s, transform 0.2s; position: relative; }
+    .check-btn.checked { background: var(--card-color, var(--accent)); border-color: var(--card-color, var(--accent)); }
+    .check-btn .tick { opacity: 0; transform: scale(0.4) rotate(-15deg); transition: opacity 0.25s, transform 0.25s; font-size: 14px; color: #0A0A0F; font-weight: 800; }
+    .check-btn.checked .tick { opacity: 1; transform: scale(1) rotate(0deg); }
 
-    .check-btn {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 2px solid var(--card-color, var(--accent));
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.3s, border-color 0.3s, transform 0.2s;
-      position: relative;
-    }
-    .check-btn.checked {
-      background: var(--card-color, var(--accent));
-      border-color: var(--card-color, var(--accent));
-    }
-    .check-btn .tick {
-      opacity: 0;
-      transform: scale(0.4) rotate(-15deg);
-      transition: opacity 0.25s, transform 0.25s;
-      font-size: 14px;
-      color: #0A0A0F;
-      font-weight: 800;
-    }
-    .check-btn.checked .tick {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
-
-    @keyframes ripple {
-      from { transform: scale(0); opacity: 0.6; }
-      to   { transform: scale(2.8); opacity: 0; }
-    }
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-      background: var(--card-color, var(--accent));
-      animation: ripple 0.5s ease-out forwards;
-      pointer-events: none;
-    }
+    @keyframes ripple { from { transform: scale(0); opacity: 0.6; } to { transform: scale(2.8); opacity: 0; } }
+    .ripple { position: absolute; border-radius: 50%; width: 100%; height: 100%; background: var(--card-color, var(--accent)); animation: ripple 0.5s ease-out forwards; pointer-events: none; }
 
     .divider { height: 1px; background: #ffffff08; margin: 24px 20px 0; }
 
+    /* ── GRID SECTION ── */
     .grid-section { padding: 24px 20px 40px; }
     .grid-header  { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
     .grid-title   { font-size: 16px; font-weight: 700; }
@@ -216,66 +112,39 @@
     .grid-legend  { display: flex; gap: 6px; align-items: center; margin-bottom: 14px; }
     .legend-dot   { width: 8px; height: 8px; border-radius: 3px; }
     .legend-label { font-size: 11px; color: var(--text-dim); }
-
     .month-labels { display: flex; gap: 2px; margin-bottom: 4px; }
     .month-chip   { font-size: 9px; color: var(--text-dim); font-weight: 600; letter-spacing: 0.04em; }
 
-    .grid-scroll-container {
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scroll-behavior: smooth;
-    }
-    .contrib-grid {
-      display: grid;
-      grid-template-rows: repeat(7, 1fr);
-      grid-auto-flow: column;
-      gap: 3px;
-    }
-    .g-cell {
-      width: 11px; height: 11px;
-      border-radius: 3px;
-      background: var(--bg-card2);
-      transition: background 0.4s, box-shadow 0.4s;
-    }
+    .contrib-grid { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; gap: 3px; }
+    .g-cell { width: 11px; height: 11px; border-radius: 3px; background: var(--bg-card2); transition: background 0.4s, box-shadow 0.4s; }
     .g-cell.level-1 { background: #6C63FF33; }
     .g-cell.level-2 { background: #6C63FF66; }
     .g-cell.level-3 { background: #6C63FF99; }
     .g-cell.level-4 { background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
     .g-cell.today   { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .g-cell.today.active {
-      background: var(--accent) !important;
-      box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-glow) !important;
-      animation: pulse-today 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse-today {
-      0%,100% { box-shadow: 0 0 8px var(--accent), 0 0 18px var(--accent-glow); }
-      50%      { box-shadow: 0 0 14px var(--accent), 0 0 30px var(--accent-glow); }
-    }
+    .g-cell.today.active { background: var(--accent) !important; box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-glow) !important; animation: pulse-today 1.8s ease-in-out infinite; }
+    @keyframes pulse-today { 0%,100% { box-shadow: 0 0 8px var(--accent), 0 0 18px var(--accent-glow); } 50% { box-shadow: 0 0 14px var(--accent), 0 0 30px var(--accent-glow); } }
 
+    /* ── ALL DONE BANNER ── */
     .all-done-banner {
-      margin: 0 20px 24px;
-      background: linear-gradient(135deg, #6C63FF, #A78BFA);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      display: flex; align-items: center; gap: 12px;
-      opacity: 0; transform: translateY(12px);
-      transition: opacity 0.5s, transform 0.5s;
-      pointer-events: none;
+      margin: 0 20px 24px; background: linear-gradient(135deg, #6C63FF, #A78BFA); border-radius: var(--radius);
+      padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+      opacity: 0; transform: translateY(12px); transition: opacity 0.5s, transform 0.5s; pointer-events: none;
     }
     .all-done-banner.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
     .banner-icon { font-size: 28px; }
     .banner-text h3 { font-size: 15px; font-weight: 700; }
     .banner-text p  { font-size: 12px; color: #ffffffaa; }
 
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
-      pointer-events: none;
-      z-index: 0;
-    }
+    /* ── ORBS ── */
+    .orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
     .orb1 { width: 300px; height: 300px; background: #6C63FF18; top: -80px; right: -80px; }
     .orb2 { width: 200px; height: 200px; background: #06FFA518; bottom: 200px; left: -60px; }
+
+    /* ── MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 20px; }
+    .modal-overlay.show { display: flex; }
+    .modal-content { background: var(--bg-card); border: 1px solid #ffffff10; border-radius: 24px; padding: 24px; width: 100%; max-w-md; }
   </style>
 </head>
 <body>
@@ -283,36 +152,37 @@
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
 
-  <div style="position:relative;z-index:1;">
+  <div style="position:relative; z-index:1;">
 
-    <!-- HEADER -->
     <div class="header">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
         <div>
-          <div class="greeting">Bugungi kun</div>
+          <div class="greeting" id="greetingText">Yuklanmoqda...</div>
           <div class="title">Odatlar 🎯</div>
           <div class="date-str" id="dateStr"></div>
         </div>
-        <div class="ring-wrap">
-          <svg width="80" height="80" viewBox="0 0 80 80">
-            <circle class="ring-bg"   cx="40" cy="40" r="32"/>
-            <circle class="ring-fill" cx="40" cy="40" r="32" id="ringFill"/>
-          </svg>
-          <div class="ring-label">
-            <div class="ring-num"  id="ringNum">0</div>
-            <div class="ring-sub">DONE</div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+          <button onclick="openModal()" class="bg-[#6C63FF] hover:bg-[#5a52d6] text-white px-3 py-2 rounded-xl text-xs font-bold transition-colors shadow-lg">➕ Qo'shish</button>
+          <div class="ring-wrap">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="ring-bg"   cx="40" cy="40" r="32"/>
+              <circle class="ring-fill" cx="40" cy="40" r="32" id="ringFill"/>
+            </svg>
+            <div class="ring-label">
+              <div class="ring-num"  id="ringNum">0</div>
+              <div class="ring-sub">DONE</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- STATUS BAR -->
     <div class="status-bar">
       <div style="flex:1;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
           <div class="status-text">
             <h2 id="statusTitle">Boshlaylik! 💪</h2>
-            <p  id="statusSub">Bajarildi: <strong id="doneCount">0</strong> / <strong id="totalCount">4</strong> odat</p>
+            <p id="statusSub">Bajarildi: <strong id="doneCount">0</strong> / <strong id="totalCount">0</strong> odat</p>
           </div>
         </div>
         <div class="progress-track">
@@ -321,23 +191,22 @@
       </div>
     </div>
 
-    <!-- HABITS -->
     <div class="section-label">BUGUNGI VAZIFALAR</div>
-    <div class="card-list" id="habitList"></div>
+    <div class="card-list" id="habitList">
+      <div class="text-center text-gray-500 py-4">Sinxronizatsiya qilinmoqda...</div>
+    </div>
 
-    <!-- ALL DONE BANNER -->
     <div style="height:16px;"></div>
     <div class="all-done-banner" id="allDoneBanner">
       <div class="banner-icon">🏆</div>
       <div class="banner-text">
-        <h3>Barcha odatlar baja'rildi!</h3>
+        <h3>Barcha odatlar bajarildi!</h3>
         <p>Ajoyib! Bugun siz g'olib bo'ldingiz 🎉</p>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- GRID SECTION -->
     <div class="grid-section">
       <div class="grid-header">
         <div class="grid-title">Yillik faollik</div>
@@ -352,7 +221,7 @@
         <div class="legend-dot" style="background:var(--accent);"></div>
         <div class="legend-label">Ko'proq</div>
       </div>
-      <div class="grid-scroll-container" id="gridScrollContainer">
+      <div style="overflow-x:auto; padding-bottom:4px;" id="gridScrollContainer">
         <div id="monthLabels" class="month-labels"></div>
         <div id="contribGrid" class="contrib-grid"></div>
       </div>
@@ -360,47 +229,216 @@
 
   </div>
 
+  <div id="habitModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 class="text-xl font-bold mb-4 text-white">Yangi Odat Qo'shish</h3>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-[#8888AA] mb-1 uppercase tracking-wider">Odat Nomi</label>
+        <input type="text" id="habitName" placeholder="Masalan: Kitob o'qish" class="w-full bg-[#1A1A2E] border border-[#ffffff10] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#6C63FF] text-sm" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-[#8888AA] mb-1 uppercase tracking-wider">Tavsifi</label>
+        <input type="text" id="habitDesc" placeholder="Har kuni 15 sahifa" class="w-full bg-[#1A1A2E] border border-[#ffffff10] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#6C63FF] text-sm" />
+      </div>
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <div>
+          <label class="block text-xs font-semibold text-[#8888AA] mb-1 uppercase tracking-wider">Emoji</label>
+          <input type="text" id="habitIcon" value="🎯" class="w-full text-center bg-[#1A1A2E] border border-[#ffffff10] rounded-xl px-4 py-3 text-white text-lg focus:outline-none focus:border-[#6C63FF]" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-[#8888AA] mb-1 uppercase tracking-wider">Rang</label>
+          <input type="color" id="habitColor" value="#6C63FF" class="w-full h-[46px] bg-[#1A1A2E] border border-[#ffffff10] rounded-xl px-2 focus:outline-none cursor-pointer" />
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeModal()" class="flex-1 bg-gray-800 text-gray-300 py-3 rounded-xl font-semibold text-sm">Bekor qilish</button>
+        <button onclick="saveCustomHabit()" id="saveBtn" class="flex-1 bg-[#6C63FF] text-white py-3 rounded-xl font-semibold text-sm shadow-[0_0_10px_#6C63FF44]">Saqlash</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-  (() => {
-    const HABITS = [
-      { id: 'sport', name: 'Sport / Yugurish', desc: 'Bugun 30 daqiqa yugur yoki mashq qil', icon: '🏃‍♂️', color: '#FF6B6B', dim: '#FF6B6B22' },
-      { id: 'it', name: 'IT / Dasturlash', desc: 'Loyihaga kamida 1 commit yoki 1 soat kod', icon: '💻', color: '#4ECDC4', dim: '#4ECDC422' },
-      { id: 'spirit', name: 'Ruhoniyat', desc: 'Namoz, meditation yoki shukrona daftari', icon: '🧘', color: '#FFE66D', dim: '#FFE66D22' },
-      { id: 'finance', name: 'Moliya', desc: 'Bugun xarajat va daromadni yoz', icon: '💰', color: '#06FFA5', dim: '#06FFA522' }
-    ];
+    // ⚠️ DIQQAT: Shu yerni serveringiz linki bilan almashtiring!
+    const BACKEND_URL = "https://SIZNING_RENDER_LINKINGIZ.onrender.com"; 
+    
+    // Telegram initsializatsiyasi
+    const tg = window.Telegram?.WebApp;
+    if(tg) { tg.ready(); tg.expand(); }
 
-    // Sanani formatlash kaliti: YYYY-MM-DD (LocalStorage uchun)
+    // Ma'lumotlar
+    const TELEGRAM_ID = tg?.initDataUnsafe?.user?.id || 5471176468;
+    const FIRST_NAME = tg?.initDataUnsafe?.user?.first_name || "Do'stim";
     const today = new Date();
-    const dateKey = today.toISOString().split('T')[0];
+    const todayStr = today.toISOString().split('T')[0];
 
-    // LocalStoragedan bugungi holatni o'qish
-    let savedState = JSON.parse(localStorage.getItem('habit_tracker_state')) || {};
-    if (!savedState[dateKey]) {
-      savedState[dateKey] = [];
-    }
-
-    const state = { done: new Set(savedState[dateKey]) };
+    let HABITS = [];
+    let HISTORY = {};
 
     /* ─── DATE DISPLAY ─── */
     const dayNames = ['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
     const monthNamesUz = ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
-    document.getElementById('dateStr').textContent =
-      `${dayNames[today.getDay()]}, ${today.getDate()} ${monthNamesUz[today.getMonth()]} ${today.getFullYear()}`;
+    document.getElementById('dateStr').textContent = `${dayNames[today.getDay()]}, ${today.getDate()} ${monthNamesUz[today.getMonth()]} ${today.getFullYear()}`;
 
-    /* ─── STREAK CALCULATION ─── */
-    function calculateCurrentStreak(history) {
+    // Tizimni yuklash
+    async function loadData() {
+      document.getElementById('greetingText').textContent = "Ulanmoqda...";
+      try {
+        const resp = await fetch(`${BACKEND_URL}/api/get_habits_data?user_id=${TELEGRAM_ID}`);
+        if (!resp.ok) throw new Error("Tarmoq xatosi");
+        
+        const data = await resp.json();
+        HABITS = data.habits || [];
+        HISTORY = data.history || {};
+        
+        document.getElementById('greetingText').textContent = `Assalomu alaykum, ${FIRST_NAME} 👋`;
+        renderHabits();
+        updateUI();
+        buildGrid();
+      } catch (e) {
+        console.error(e);
+        document.getElementById('greetingText').textContent = "Tarmoq xatosi ❌";
+        document.getElementById('habitList').innerHTML = `<div class="text-center text-[#FF6B6B] py-4 text-sm font-semibold">Serverga ulanib bo'lmadi.<br>Backend manzili to'g'riligini tekshiring.</div>`;
+      }
+    }
+
+    function renderHabits() {
+      const list = document.getElementById('habitList');
+      list.innerHTML = '';
+      
+      HABITS.forEach(h => {
+        const id = h["Odat ID"];
+        const color = h["Rangi"] || "#6C63FF";
+        const isDone = (HISTORY[todayStr] || []).includes(id);
+        const dimColor = color + "22"; // opacity 22%
+        
+        const card = document.createElement('div');
+        card.className = `habit-card ${isDone ? 'done' : ''}`;
+        card.id = `card-${id}`;
+        card.style.cssText = `--card-color:${color}; --card-dim:${dimColor}; --card-bg-done:${dimColor}`;
+        card.innerHTML = `
+          <div class="card-icon">${h["Emoji"] || "🎯"}</div>
+          <div class="card-body" onclick="toggleHabit('${id}')">
+            <div class="card-name">${h["Nomi"]}</div>
+            <div class="card-desc">${h["Tavsifi"] || ""}</div>
+          </div>
+          <div class="check-btn ${isDone ? 'checked' : ''}" id="check-${id}" onclick="toggleHabit('${id}')">
+            <span class="tick">✓</span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    async function toggleHabit(id) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      
+      const card = document.getElementById(`card-${id}`);
+      const check = document.getElementById(`check-${id}`);
+
+      if (!HISTORY[todayStr]) HISTORY[todayStr] = [];
+      const isDone = HISTORY[todayStr].includes(id);
+
+      // Dinamik Animatsiya va UI tezkor o'zgarishi
+      if (isDone) {
+        HISTORY[todayStr] = HISTORY[todayStr].filter(x => x !== id);
+        if(check) check.classList.remove('checked');
+        if(card) card.classList.remove('done');
+      } else {
+        HISTORY[todayStr].push(id);
+        if(check) {
+            check.classList.add('checked');
+            const r = document.createElement('div');
+            r.className = 'ripple';
+            check.appendChild(r);
+            r.addEventListener('animationend', () => r.remove());
+        }
+        if(card) card.classList.add('done');
+      }
+
+      updateUI();
+      buildGrid();
+
+      // Orqa fonda API ga jo'natish
+      try {
+        await fetch(`${BACKEND_URL}/api/toggle_habit`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: id, date: todayStr })
+        });
+      } catch (e) { console.error("Saqlashda xato", e); }
+    }
+
+    function updateUI() {
+      const total = HABITS.length;
+      const done = HISTORY[todayStr]?.length || 0;
+      const pct = total > 0 ? (done / total) * 100 : 0;
+      
+      const circ = 2 * Math.PI * 32;
+      const offset = circ * (1 - done / total);
+      const ringFill = document.getElementById('ringFill');
+      if (ringFill) {
+        ringFill.style.strokeDashoffset = offset;
+        ringFill.style.stroke = done === total && total > 0 ? '#06FFA5' : '#6C63FF';
+      }
+      
+      document.getElementById('ringNum').textContent = done;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('doneCount').textContent = done;
+      document.getElementById('totalCount').textContent = total;
+
+      const titles = ['Boshlaylik! 💪', 'Ajoyib boshlanish!', 'Yarim yo\'lda 🚀', 'Finishga yaqin!', 'Mukammal kun! 🏆'];
+      document.getElementById('statusTitle').textContent = titles[Math.min(done, 4)] || 'Muvaffaqiyat!';
+      document.getElementById('allDoneBanner').classList.toggle('show', done === total && total > 0);
+    }
+
+    /* ── Modal funksiyalari ── */
+    function openModal() { document.getElementById('habitModal').classList.add('show'); }
+    function closeModal() { document.getElementById('habitModal').classList.remove('show'); }
+
+    async function saveCustomHabit() {
+      const name = document.getElementById('habitName').value.trim();
+      const desc = document.getElementById('habitDesc').value.trim();
+      const icon = document.getElementById('habitIcon').value.trim();
+      const color = document.getElementById('habitColor').value;
+      const btn = document.getElementById('saveBtn');
+      
+      if(!name) return alert("Iltimos, odat nomini kiriting!");
+      
+      btn.textContent = "Saqlanmoqda...";
+      btn.disabled = true;
+
+      try {
+        const resp = await fetch(`${BACKEND_URL}/api/add_custom_habit`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ user_id: TELEGRAM_ID, name, desc, icon, color })
+        });
+        if (!resp.ok) throw new Error("Xato");
+        
+        await loadData(); // Qayta yuklash
+        document.getElementById('habitName').value = "";
+        document.getElementById('habitDesc').value = "";
+        closeModal();
+      } catch (e) {
+        alert("Odat qo'shishda xatolik yuz berdi. Backend ulanishini tekshiring.");
+      } finally {
+        btn.textContent = "Saqlash";
+        btn.disabled = false;
+      }
+    }
+
+    /* ── Github Grid chizish ── */
+    function calculateCurrentStreak() {
       let currentStreak = 0;
       let checkDate = new Date(today);
       
       while (true) {
         const k = checkDate.toISOString().split('T')[0];
-        // Agar o'sha kuni kamida bitta odat bajarilgan bo'lsa streak hisoblanadi
-        if (history[k] && history[k].length > 0) {
+        if (HISTORY[k] && HISTORY[k].length > 0) {
           currentStreak++;
           checkDate.setDate(checkDate.getDate() - 1);
         } else {
-          // Agar kecha ham, bugun ham bajarilmagan bo'lsa zanjir uziladi
-          if (k === dateKey) {
+          if (k === todayStr) {
             checkDate.setDate(checkDate.getDate() - 1);
             continue;
           }
@@ -410,92 +448,11 @@
       return currentStreak;
     }
 
-    /* ─── RENDER HABITS ─── */
-    const list = document.getElementById('habitList');
-    HABITS.forEach(h => {
-      const isDone = state.done.has(h.id);
-      
-      // Tarixiy umumiy streakni hisoblash (odatiy vizualizatsiya uchun)
-      let totalStreak = 0;
-      Object.keys(savedState).forEach(k => {
-        if (savedState[k].includes(h.id)) totalStreak++;
-      });
-
-      const card = document.createElement('div');
-      card.className = `habit-card ${isDone ? 'done' : ''}`;
-      card.id = `card-${h.id}`;
-      card.style.cssText = `--card-color:${h.color};--card-dim:${h.dim};--card-bg-done:${h.dim}`;
-      card.innerHTML = `
-        <div class="card-icon" id="icon-${h.id}">${h.icon}</div>
-        <div class="card-body">
-          <div class="card-name">${h.name}</div>
-          <div class="card-desc">${h.desc}</div>
-          <div class="card-streak"><span>🔥</span> Umumiy jami: ${totalStreak} kun</div>
-        </div>
-        <div class="check-btn ${isDone ? 'checked' : ''}" id="check-${h.id}">
-          <span class="tick">✓</span>
-        </div>
-      `;
-      card.addEventListener('click', () => toggleHabit(h.id, card, h));
-      list.appendChild(card);
-    });
-
-    /* ─── TOGGLE FUNKSIYASI ─── */
-    function toggleHabit(id, card, h) {
-      const check = document.getElementById(`check-${id}`);
-      if (state.done.has(id)) {
-        state.done.delete(id);
-        check.classList.remove('checked');
-        card.classList.remove('done');
-      } else {
-        state.done.add(id);
-        check.classList.add('checked');
-        card.classList.add('done');
-        
-        const r = document.createElement('div');
-        r.className = 'ripple';
-        check.appendChild(r);
-        r.addEventListener('animationend', () => r.remove());
-        
-        if (window.Telegram?.WebApp?.HapticFeedback) {
-          window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-        }
-      }
-
-      // Ma'lumotni saqlash
-      savedState[dateKey] = Array.from(state.done);
-      localStorage.setItem('habit_tracker_state', JSON.stringify(savedState));
-
-      updateUI();
-      buildGrid(); // Grid darajasini dinamik yangilash
-    }
-
-    /* ─── UI YANGILASH ─── */
-    function updateUI() {
-      const done  = state.done.size;
-      const total = HABITS.length;
-      const pct   = (done / total) * 100;
-
-      const circ = 2 * Math.PI * 32;
-      const offset = circ * (1 - done / total);
-      document.getElementById('ringFill').style.strokeDashoffset = offset;
-      document.getElementById('ringFill').style.stroke = done === total ? '#06FFA5' : '#6C63FF';
-      document.getElementById('ringNum').textContent = done;
-
-      document.getElementById('progressFill').style.width = pct + '%';
-      document.getElementById('doneCount').textContent = done;
-      document.getElementById('totalCount').textContent = total;
-
-      const titles = ['Boshlaylik! 💪', 'Ajoyib boshlanish!', 'Yarim yo\'lda 🚀', 'Finishga yaqin!', 'Mukammal kun! 🏆'];
-      document.getElementById('statusTitle').textContent = titles[Math.min(done, 4)];
-
-      document.getElementById('allDoneBanner').classList.toggle('show', done === total);
-    }
-
-    /* ─── GITHUB SESTREMA GRID ─── */
     function buildGrid() {
       const grid = document.getElementById('contribGrid');
       const monthLabelContainer = document.getElementById('monthLabels');
+      if (!grid || !monthLabelContainer) return;
+      
       grid.innerHTML = '';
       monthLabelContainer.innerHTML = '';
 
@@ -508,7 +465,6 @@
       const totalDays = Math.round((end - start) / msPerDay) + 7;
       const weekCols = Math.ceil(totalDays / 7);
 
-      // Oylarni belgilash
       const monthSeen = {};
       const colMonths = [];
       for (let col = 0; col < weekCols; col++) {
@@ -527,13 +483,12 @@
       colMonths.forEach(({ col, month }) => {
         const chip = document.createElement('div');
         chip.className = 'month-chip';
-        chip.textContent = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month];
+        chip.textContent = monthNamesUz[month].substring(0,3);
         chip.style.cssText = `position:absolute;left:${col * cellW}px;`;
         labelWrap.appendChild(chip);
       });
       monthLabelContainer.appendChild(labelWrap);
 
-      // Katakchalarni qurish
       for (let col = 0; col < weekCols; col++) {
         for (let row = 0; row < 7; row++) {
           const d = new Date(start);
@@ -547,23 +502,16 @@
           const isFuture = d > today;
 
           if (!isFuture) {
+            const doneCount = HISTORY[currentLoopKey]?.length || 0;
             if (isToday) {
               cell.id = 'today-cell';
               cell.classList.add('today');
-              // Bugungi yashil darajani aniqlash
-              const doneSize = state.done.size;
-              if (doneSize > 0) cell.classList.add('active');
-              if (doneSize === 4) cell.classList.add('level-4');
-              else if (doneSize === 3) cell.classList.add('level-3');
-              else if (doneSize === 2) cell.classList.add('level-2');
-              else if (doneSize === 1) cell.classList.add('level-1');
+              if (doneCount > 0) cell.classList.add('active');
             } else {
-              // Real tarixiy ma'lumotlarni o'qish
-              const pastDone = savedState[currentLoopKey] || [];
-              if (pastDone.length === 4) cell.classList.add('level-4');
-              else if (pastDone.length === 3) cell.classList.add('level-3');
-              else if (pastDone.length === 2) cell.classList.add('level-2');
-              else if (pastDone.length === 1) cell.classList.add('level-1');
+              if (doneCount >= 4) cell.classList.add('level-4');
+              else if (doneCount === 3) cell.classList.add('level-3');
+              else if (doneCount === 2) cell.classList.add('level-2');
+              else if (doneCount === 1) cell.classList.add('level-1');
             }
           }
 
@@ -572,25 +520,14 @@
         }
       }
 
-      // Haqiqiy umumiy ketma-ketlik (streak)ni ko'rsatish
-      const currentStreak = calculateCurrentStreak(savedState);
-      document.getElementById('streakBadge').textContent = `${currentStreak} kun ketma-ket 🔥`;
+      document.getElementById('streakBadge').textContent = `${calculateCurrentStreak()} kun ketma-ket 🔥`;
 
-      // Skrollni avtomatik ravishda eng oxiriga (bugungi kunga) surish
       const scrollContainer = document.getElementById('gridScrollContainer');
-      setTimeout(() => {
-        scrollContainer.scrollLeft = scrollContainer.scrollWidth;
-      }, 100);
+      setTimeout(() => { scrollContainer.scrollLeft = scrollContainer.scrollWidth; }, 100);
     }
 
-    buildGrid();
-    updateUI();
-
-    if (window.Telegram?.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
-    }
-  })();
+    // Tizimni ishga tushirish
+    loadData();
   </script>
 </body>
 </html>
