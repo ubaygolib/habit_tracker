@@ -42,28 +42,25 @@
     .prog-t{height:4px;background:var(--card2);border-radius:99px;margin-top:10px;overflow:hidden}
     .prog-f{height:100%;background:linear-gradient(90deg,var(--acc),#a78bfa);border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
 
-    /* SECT LABEL */
     .sl{padding:0 20px 10px;font-size:11px;font-weight:600;color:var(--sec);letter-spacing:.08em;text-transform:uppercase;position:relative;z-index:1}
 
     /* CARDS */
     .cl{padding:0 20px;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
-    .hc{background:var(--card);border-radius:var(--rad);padding:14px 14px 14px 17px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:transform .18s,border-color .3s,background .3s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+    .hc{background:var(--card);border-radius:var(--rad);padding:14px 14px 14px 17px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,.04);transition:transform .18s,border-color .3s,background .3s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
     .hc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3.5px;border-radius:4px 0 0 4px;background:var(--cc,var(--acc));opacity:.9}
-    .hc:active{transform:scale(.975)}
     .hc.done{border-color:rgba(var(--cc-rgb,124,111,255),.2);background:var(--cd,var(--card))}
     .ci{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--cd,var(--acc-g));flex-shrink:0}
-    .cb{flex:1;min-width:0}
+    .cb{flex:1;min-width:0; cursor:pointer;}
     .cn{font-size:14px;font-weight:600}
     .cdesc{font-size:11px;color:var(--sec);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .csk{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--dim);margin-top:3px;font-weight:500}
-
-    /* CMT & CHECKBOX */
-    .actions { display: flex; align-items: center; gap: 8px; }
-    .cmt-btn { width: 30px; height: 30px; border-radius: 10px; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--sec); transition: all 0.2s; }
-    .cmt-btn:active { transform: scale(0.9); background: var(--dim); }
-    .cmt-btn.has-cmt { color: var(--acc); background: var(--acc-g); }
     
-    .ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--cc,var(--acc));display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;transition:background .3s,border-color .3s}
+    /* CMT & DEL & CHECKBOX */
+    .actions { display: flex; align-items: center; gap: 6px; }
+    .action-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: all 0.2s; border:1px solid transparent;}
+    .action-btn:active { transform: scale(0.9); }
+    .action-btn.del:hover { background: rgba(255,107,122,.15); border-color: rgba(255,107,122,.3); color: #ff6b7a;}
+    
+    .ck{width:32px;height:32px;border-radius:50%;border:2px solid var(--cc,var(--acc));display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;transition:background .3s,border-color .3s}
     .ck.on{background:var(--cc,var(--acc));border-color:var(--cc,var(--acc))}
     .ck .tk{opacity:0;transform:scale(.4) rotate(-15deg);transition:opacity .25s,transform .25s;font-size:13px;color:#0c0c12;font-weight:900}
     .ck.on .tk{opacity:1;transform:scale(1) rotate(0)}
@@ -73,15 +70,18 @@
     /* BANNER & DIVIDER */
     .banner{margin:14px 20px;background:linear-gradient(135deg,var(--acc),#a78bfa);border-radius:var(--rad);padding:13px 16px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none;position:relative;z-index:1}
     .banner.on{opacity:1;transform:translateY(0);pointer-events:auto}
+    .bi{font-size:24px}
+    .bt h3{font-size:14px;font-weight:700}
+    .bt p{font-size:11px;color:rgba(255,255,255,.7)}
     .div{height:1px;background:rgba(255,255,255,.05);margin:20px 20px 0;position:relative;z-index:1}
 
     /* STATS & CALENDAR */
     .gs{padding:20px 20px 36px;position:relative;z-index:1}
-    .tabs{display: flex; gap: 8px; margin-bottom: 16px;}
-    .tab{padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; color: var(--sec); cursor: pointer; transition: 0.2s; border: 1px solid transparent;}
-    .tab.active{background: var(--acc-g); color: var(--acc); border-color: rgba(124,111,255,.3);}
+    .tabs{display: flex; gap: 8px; margin-bottom: 16px; background: var(--card2); padding: 4px; border-radius: 99px;}
+    .tab{flex:1; text-align:center; padding: 8px 0; border-radius: 99px; font-size: 12px; font-weight: 600; color: var(--sec); cursor: pointer; transition: 0.2s;}
+    .tab.active{background: var(--card); color: var(--txt); box-shadow: 0 2px 8px rgba(0,0,0,0.2);}
     
-    .gh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+    .gh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
     .gt{font-size:15px;font-weight:700}
     
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
@@ -89,7 +89,7 @@
     .cal-cell { aspect-ratio: 1; border-radius: 10px; background: var(--card2); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s; position: relative; overflow: hidden; }
     .cal-cell.today { outline: 1.5px solid var(--acc); outline-offset: 2px; }
     .cal-num { font-size: 12px; font-weight: 700; z-index: 2;}
-    .cal-pct { font-size: 9px; color: rgba(255,255,255,0.7); font-weight: 600; z-index: 2; margin-top: 1px;}
+    .cal-pct { font-size: 9px; color: rgba(255,255,255,0.8); font-weight: 700; z-index: 2; margin-top: 1px;}
     
     /* MODALS */
     .mo{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s}
@@ -115,10 +115,11 @@
     .btn:active{transform:scale(.97)}
     .btn-p{background:var(--pk,var(--acc));color:#0c0c12}
     .btn-g{background:var(--card2);color:var(--sec)}
+    .btn-d{background:#ff6b7a;color:#fff}
     
-    /* TOAST */
     .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:12px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity .28s,transform .28s;}
     .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+    .empty{text-align:center;padding:36px 20px;color:var(--dim)}
   </style>
 </head>
 <body>
@@ -129,7 +130,7 @@
     <div class="hd-left">
       <div class="eyebrow" id="eyebrow">Yuklanmoqda...</div>
       <div class="htitle">Odatlar <span style="font-size:22px">🎯</span>
-        <div class="add-b" id="openAdd">＋</div>
+        <div class="add-b" onclick="openAddModal()">＋</div>
       </div>
       <div class="dstr" id="dstr"></div>
     </div>
@@ -165,19 +166,23 @@
 
   <div class="div"></div>
 
-  <!-- CALENDAR & STATS (YANGILANGAN QISM) -->
+  <!-- CALENDAR & STATS -->
   <div class="gs">
+    <!-- TABS -->
     <div class="tabs">
-      <div class="tab active">Oylik</div>
-      <div class="tab">Haftalik</div>
-      <div class="tab">Yillik</div>
+      <div class="tab active" onclick="switchTab('oylik', this)">Oylik</div>
+      <div class="tab" onclick="switchTab('haftalik', this)">Haftalik</div>
+      <div class="tab" onclick="switchTab('yillik', this)">Yillik</div>
     </div>
+    
     <div class="gh">
       <div class="gt" id="monthNameTitle">Statistika</div>
     </div>
     
-    <!-- Kalendar Katakchalari -->
-    <div class="cal-grid" id="calGrid"></div>
+    <!-- STATS VIEW -->
+    <div id="statsView">
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
   </div>
 </div>
 
@@ -192,22 +197,36 @@
     <div class="fb"><label class="fl">Ikonka</label><div class="eg" id="eg"></div></div>
     <div class="fb"><label class="fl">Rang</label><div class="cr" id="cr"></div></div>
     <div class="ma">
-      <button class="btn btn-g" id="acn">Bekor qilish</button>
+      <button class="btn btn-g" onclick="document.getElementById('am').classList.remove('on')">Bekor qilish</button>
       <button class="btn btn-p" id="aok" disabled>Qo'shish</button>
     </div>
   </div>
 </div>
 
-<!-- COMMENT MODAL (YANGI QO'SHILDI) -->
+<!-- COMMENT MODAL -->
 <div class="mo" id="cm">
   <div class="ms">
     <div class="mh"></div>
     <div class="mtit">Izoh yozish 📝</div>
-    <div class="msub">Bugungi bajarilgan yoki bajarilmagan odatingiz sababini yozing.</div>
-    <div class="fb"><textarea class="ti" id="cval" rows="3" placeholder="Bugun juda charchagandim..." style="resize:none"></textarea></div>
+    <div class="msub">Bugungi natijangiz sababini qayd eting.</div>
+    <div class="fb"><textarea class="ti" id="cval" rows="3" placeholder="Bugun charchagandim..." style="resize:none"></textarea></div>
     <div class="ma">
-      <button class="btn btn-g" id="ccn">Bekor</button>
+      <button class="btn btn-g" onclick="document.getElementById('cm').classList.remove('on')">Bekor</button>
       <button class="btn btn-p" style="--pk:#7c6fff" id="cok">Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="mo" id="dm">
+  <div class="ms" style="text-align:center;">
+    <div class="mh"></div>
+    <div style="font-size:36px; margin-bottom:8px;">🗑️</div>
+    <div class="mtit" id="dtit">O'chirilsinmi?</div>
+    <div class="msub">Bu amalni qaytarib bo'lmaydi.</div>
+    <div class="ma">
+      <button class="btn btn-g" onclick="document.getElementById('dm').classList.remove('on')">Bekor</button>
+      <button class="btn btn-d" id="dok">O'chirish</button>
     </div>
   </div>
 </div>
@@ -221,14 +240,10 @@
   const TELEGRAM_ID = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 5471176468;
 
   const PAL=[
-    {c:'#7c6fff',d:'rgba(124,111,255,.14)'},
-    {c:'#5de0c5',d:'rgba(93,224,197,.14)'},
-    {c:'#ff6b7a',d:'rgba(255,107,122,.14)'},
-    {c:'#43e097',d:'rgba(67,224,151,.14)'},
-    {c:'#ffd166',d:'rgba(255,209,102,.14)'},
-    {c:'#b67cff',d:'rgba(182,124,255,.14)'},
-    {c:'#ff9f5b',d:'rgba(255,159,91,.14)'},
-    {c:'#4ecdc4',d:'rgba(78,205,196,.14)'},
+    {c:'#7c6fff',d:'rgba(124,111,255,.14)'}, {c:'#5de0c5',d:'rgba(93,224,197,.14)'},
+    {c:'#ff6b7a',d:'rgba(255,107,122,.14)'}, {c:'#43e097',d:'rgba(67,224,151,.14)'},
+    {c:'#ffd166',d:'rgba(255,209,102,.14)'}, {c:'#b67cff',d:'rgba(182,124,255,.14)'},
+    {c:'#ff9f5b',d:'rgba(255,159,91,.14)'}, {c:'#4ecdc4',d:'rgba(78,205,196,.14)'},
   ];
   const EM=['🏃‍♂️','💻','🧘','💰','📚','🎨','🎵','💧','🥗','😴','✍️','🚭','🧹','🌱','🙏','🚴','🏋️','🧠','📝','☀️','🎯','🎭'];
 
@@ -246,10 +261,9 @@
   let DONE = new Set();
   const hl=document.getElementById('hl');
 
-  // LOAD DATA FROM API
+  // SERVERDAN YUKLASH
   async function loadData() {
     try {
-      // 1. Odatlarni va tarixni tortish
       const res = await fetch(`${BACKEND_URL}/api/get_habits_data?user_id=${TELEGRAM_ID}`);
       const data = await res.json();
       HABITS = (data.habits || []).map(h => ({
@@ -261,45 +275,46 @@
       DONE.clear();
       DM[dk].forEach(id => DONE.add(id));
 
-      // 2. Oylik Kalendar Statistikasini tortish
       try {
         const statsRes = await fetch(`${BACKEND_URL}/api/get_monthly_stats?user_id=${TELEGRAM_ID}`);
         const statsData = await statsRes.json();
         MONTHLY_STATS = statsData.monthly_stats || {};
-      } catch(e) { console.error("Stats error", e); }
+      } catch(e) {}
 
       document.getElementById('eyebrow').textContent = "Bugungi kun";
-      render(); 
-      updateUI(); 
-      buildCalendar(); // Grid o'rniga yangi Kalendar
+      render(); updateUI(); buildCalendar();
     } catch(e) {
       document.getElementById('eyebrow').textContent = "Tarmoq xatosi";
       toast("Serverga ulanishda xato!");
     }
   }
 
-  // RENDER HABITS
+  // EKRANGA CHIZISH (Habitlar)
   function render(){
     hl.innerHTML='';
     document.getElementById('tc').textContent=HABITS.length;
     if(!HABITS.length){
-      hl.innerHTML='<div class="empty"><div class="ei">🌱</div><p>Hali odatlar yo\'q. "＋" bosing.</p></div>';
+      hl.innerHTML='<div class="empty"><div style="font-size:32px;margin-bottom:8px">🌱</div><p>Hali odatlar yo\'q.</p></div>';
       return;
     }
     HABITS.forEach(h=>{
+      const isDone = DONE.has(h.id);
       const card=document.createElement('div');
-      card.className='hc'+(DONE.has(h.id)?' done':'');
+      card.className='hc'+(isDone?' done':'');
       card.id='c-'+h.id;
       card.style.cssText=`--cc:${h.color};--cd:${h.dim}`;
       card.innerHTML=`
         <div class="ci">${h.icon}</div>
-        <div class="cb" onclick="toggle('${h.id}')">
+        <div class="cb" onclick="toggleHabit('${h.id}')">
           <div class="cn">${esc(h.name)}</div>
           <div class="cdesc">${esc(h.desc||'')}</div>
         </div>
         <div class="actions">
-          <div class="cmt-btn" onclick="openComment('${h.id}')">💬</div>
-          <div class="ck${DONE.has(h.id)?' on':''}" id="ck-${h.id}" onclick="toggle('${h.id}')"><span class="tk">✓</span></div>
+          <div class="action-btn del" onclick="openDelete('${h.id}', '${esc(h.name)}'); event.stopPropagation();" title="O'chirish">🗑️</div>
+          <div class="action-btn" onclick="openComment('${h.id}'); event.stopPropagation();" title="Izoh">💬</div>
+          <div class="ck${isDone?' on':''}" id="ck-${h.id}" onclick="toggleHabit('${h.id}'); event.stopPropagation();">
+             <span class="tk">✓</span>
+          </div>
         </div>`;
       hl.appendChild(card);
     });
@@ -307,8 +322,8 @@
 
   function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
-  // TOGGLE HABIT
-  async function toggle(id){
+  // BELGILASH (Toggle)
+  window.toggleHabit = async function(id) {
     const card=document.getElementById('c-'+id);
     const ck=document.getElementById('ck-'+id);
     const wasDone = DONE.has(id);
@@ -322,25 +337,21 @@
       try{window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');}catch(e){}
     }
     
-    DM[dk]=Array.from(DONE);
-    
-    // Oylik statistikani lokal yangilash (tezkor UI uchun)
-    const bugunSana = today.getDate();
-    if(wasDone) MONTHLY_STATS[bugunSana] = Math.max(0, (MONTHLY_STATS[bugunSana]||1)-1);
-    else MONTHLY_STATS[bugunSana] = (MONTHLY_STATS[bugunSana]||0)+1;
+    // UI Local yangilanadi
+    const bugun = today.getDate();
+    if(wasDone) MONTHLY_STATS[bugun] = Math.max(0, (MONTHLY_STATS[bugun]||1)-1);
+    else MONTHLY_STATS[bugun] = (MONTHLY_STATS[bugun]||0)+1;
 
-    updateUI();
-    buildCalendar();
+    updateUI(); buildCalendar();
 
-    // Orqa fonda API ga jo'natish
+    // API ga yuboriladi
     try {
         await fetch(`${BACKEND_URL}/api/toggle_habit`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: id, date: dk })
         });
-    } catch(e) { toast("Saqlashda xato yuz berdi!"); }
-  }
+    } catch(e) { toast("Saqlashda xato!"); }
+  };
 
   function updateUI(){
     const tot=HABITS.length,dn=DONE.size;
@@ -357,54 +368,56 @@
     document.getElementById('ban').classList.toggle('on',tot>0&&dn===tot);
   }
 
-  // YANI OYLIK KALENDAR VA FOIZLI STATISTIKA
+  // TABS LOGIC
+  window.switchTab = function(tabName, element) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    element.classList.add('active');
+    
+    const sv = document.getElementById('statsView');
+    if(tabName === 'oylik') {
+        document.getElementById('monthNameTitle').textContent = `Oylik Statistika (${MONTHS[today.getMonth()]})`;
+        sv.innerHTML = '<div class="cal-grid" id="calGrid"></div>';
+        buildCalendar();
+    } else {
+        document.getElementById('monthNameTitle').textContent = tabName === 'haftalik' ? 'Haftalik Faollik' : 'Yillik Faollik';
+        sv.innerHTML = `<div style="text-align:center; padding: 40px 20px; color: var(--sec); font-size:12px; background:var(--card2); border-radius:16px;">Tez kunda qo'shiladi 🚀</div>`;
+    }
+  };
+
+  // CALENDAR CHIZISH
   function buildCalendar(){
     const cg = document.getElementById('calGrid');
+    if(!cg) return;
     cg.innerHTML = '';
-
-    const year = today.getFullYear();
-    const month = today.getMonth();
+    const year = today.getFullYear(), month = today.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = new Date(year, month, 1).getDay();
     const totHabits = Math.max(HABITS.length, 1);
 
-    // Haftaning kunlari
     ['Dsh','Ssh','Chr','Pay','Jum','Shb','Yak'].forEach(day => {
         cg.innerHTML += `<div class="day-lbl">${day}</div>`;
     });
-
-    // Bosh joylar (oy boshlanishiga moslash)
     let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
     for(let i=0; i<emptyCells; i++) cg.innerHTML += `<div></div>`;
 
     for(let d=1; d<=daysInMonth; d++) {
         const doneCount = MONTHLY_STATS[d] || 0;
         const pct = Math.round((doneCount / totHabits) * 100);
-        
-        let bg = 'var(--card2)';
         let fillStyle = '';
-        
-        // Foizga qarab rang to'qligi (Heatmap)
-        if(pct > 0) {
-            const opacity = Math.max(0.2, pct / 100);
-            fillStyle = `background: rgba(124, 111, 255, ${opacity});`;
-        }
-
+        if(pct > 0) fillStyle = `background: rgba(124, 111, 255, ${Math.max(0.2, pct / 100)});`;
         const isToday = d === today.getDate() ? 'today' : '';
-        
         cg.innerHTML += `
         <div class="cal-cell ${isToday}">
-            <div style="position:absolute; bottom:0; left:0; right:0; height:${pct}%; ${fillStyle} transition: height 0.5s ease-out;"></div>
+            <div style="position:absolute; bottom:0; left:0; right:0; height:${pct}%; ${fillStyle} transition: height 0.5s;"></div>
             <span class="cal-num">${d}</span>
             ${pct > 0 ? `<span class="cal-pct">${pct}%</span>` : ''}
         </div>`;
     }
   }
 
-  // ADD MODAL LOGIC
+  // ADD MODAL
   const am=document.getElementById('am');
   let pe=EM[0],pc=PAL[0];
-
   function renderEG(){
     const eg=document.getElementById('eg');eg.innerHTML='';
     EM.forEach(em=>{const o=document.createElement('div');o.className='eo'+(em===pe?' sel':'');o.textContent=em;o.onclick=()=>{pe=em;renderEG();};eg.appendChild(o);});
@@ -415,64 +428,60 @@
   }
   function applyPK(){document.getElementById('ams').style.setProperty('--pk',pc.c);}
 
-  document.getElementById('openAdd').onclick=()=>{
-    document.getElementById('iname').value='';
-    document.getElementById('idesc').value='';
+  window.openAddModal = () => {
+    document.getElementById('iname').value=''; document.getElementById('idesc').value='';
     pe=EM[Math.floor(Math.random()*EM.length)]; pc=PAL[HABITS.length%PAL.length];
-    renderEG();renderCR();applyPK();
+    renderEG(); renderCR(); applyPK();
     document.getElementById('aok').disabled=true;
     am.classList.add('on');
   };
-  document.getElementById('acn').onclick=()=>am.classList.remove('on');
   document.getElementById('iname').addEventListener('input',e=>{document.getElementById('aok').disabled=!e.target.value.trim();});
   
   document.getElementById('aok').onclick = async ()=>{
-    const n=document.getElementById('iname').value.trim();
-    const d=document.getElementById('idesc').value.trim();
+    const n=document.getElementById('iname').value.trim(), d=document.getElementById('idesc').value.trim();
     if(!n) return;
-    
-    document.getElementById('aok').disabled = true;
-    document.getElementById('aok').textContent = "Kuting...";
-
+    document.getElementById('aok').disabled = true; document.getElementById('aok').textContent = "Kuting...";
     try {
         const res = await fetch(`${BACKEND_URL}/api/add_custom_habit`, {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: TELEGRAM_ID, name: n, desc: d, icon: pe, color: pc.c })
         });
         if(res.ok) {
-            await loadData();
-            am.classList.remove('on');
-            toast(`"${n}" qo'shildi ✅`);
+            await loadData(); am.classList.remove('on'); toast(`"${n}" qo'shildi ✅`);
             try{window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');}catch(e){}
         }
     } catch(e) { toast("Xatolik!"); }
     document.getElementById('aok').textContent = "Qo'shish";
   };
 
-  // COMMENT MODAL LOGIC (Etap 1 tayyorgarlik)
-  const cm = document.getElementById('cm');
-  window.openComment = (id) => {
-    // Keyingi etapda API ga yozish uchun ID ni saqlab olamiz
-    cm.dataset.activeId = id; 
-    document.getElementById('cval').value = '';
-    cm.classList.add('on');
+  // DELETE MODAL
+  const dm=document.getElementById('dm'); let delId=null;
+  window.openDelete = (id, name) => {
+    delId = id; document.getElementById('dtit').textContent = `"${name}" o'chirilsinmi?`; dm.classList.add('on');
   };
-  document.getElementById('ccn').onclick = () => cm.classList.remove('on');
-  document.getElementById('cok').onclick = () => {
-    // Hozircha faqat lokal tarzda pop-up yopiladi. Keyingi etapda bu yerga API yozamiz.
-    toast("Izoh saqlandi!");
-    cm.classList.remove('on');
+  document.getElementById('dok').onclick = async () => {
+    if(!delId) return;
+    const btn = document.getElementById('dok'); btn.textContent = "...";
+    try {
+        await fetch(`${BACKEND_URL}/api/delete_habit`, {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: delId })
+        });
+        await loadData(); dm.classList.remove('on'); toast(`O'chirildi 🗑️`);
+    } catch(e) { toast("O'chirishda xato!"); }
+    btn.textContent = "O'chirish";
   };
 
-  // TOAST
-  let tt;
-  function toast(msg){
-    const el=document.getElementById('toast');
-    el.textContent=msg; el.classList.add('on');
+  // COMMENT MODAL
+  const cm = document.getElementById('cm');
+  window.openComment = (id) => { cm.dataset.activeId = id; document.getElementById('cval').value = ''; cm.classList.add('on'); };
+  document.getElementById('cok').onclick = () => { toast("Izoh saqlandi (Tez kunda bazaga ulanadi)!"); cm.classList.remove('on'); };
+
+  let tt; function toast(msg){
+    const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('on');
     clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('on'),2200);
   }
 
-  // INIT
   loadData();
 })();
 </script>
