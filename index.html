@@ -68,7 +68,7 @@
     @keyframes rpl{from{transform:scale(0);opacity:.6}to{transform:scale(2.8);opacity:0}}
     .rpl{position:absolute;border-radius:50%;width:100%;height:100%;background:var(--cc,var(--acc));animation:rpl .5s ease-out forwards;pointer-events:none}
 
-    /* BANNER & DIVIDER */
+    /* BANNER & STATS */
     .banner{margin:14px 20px;background:linear-gradient(135deg,var(--acc),#a78bfa);border-radius:var(--rad);padding:13px 16px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s;pointer-events:none;position:relative;z-index:1}
     .banner.on{opacity:1;transform:translateY(0);pointer-events:auto}
     .bi{font-size:24px}
@@ -76,12 +76,10 @@
     .bt p{font-size:11px;color:rgba(255,255,255,.7)}
     .div{height:1px;background:rgba(255,255,255,.05);margin:20px 20px 0;position:relative;z-index:1}
 
-    /* STATS & CALENDAR */
     .gs{padding:20px 20px 36px;position:relative;z-index:1}
     .tabs{display: flex; gap: 8px; margin-bottom: 16px; background: var(--card2); padding: 4px; border-radius: 99px;}
     .tab{flex:1; text-align:center; padding: 8px 0; border-radius: 99px; font-size: 12px; font-weight: 600; color: var(--sec); cursor: pointer; transition: 0.2s;}
     .tab.active{background: var(--card); color: var(--txt); box-shadow: 0 2px 8px rgba(0,0,0,0.2);}
-    
     .gh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
     .gt{font-size:15px;font-weight:700}
     
@@ -126,7 +124,6 @@
 <body>
 
 <div class="ht" id="ht">
-  <!-- HEADER -->
   <div class="hd">
     <div class="hd-left">
       <div class="eyebrow" id="eyebrow">Yuklanmoqda...</div>
@@ -144,7 +141,6 @@
     </div>
   </div>
 
-  <!-- STATUS BAR -->
   <div class="st-bar">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
@@ -158,7 +154,6 @@
   <div class="sl">BUGUNGI VAZIFALAR</div>
   <div class="cl" id="hl"></div>
 
-  <!-- BANNER -->
   <div style="height:14px"></div>
   <div class="banner" id="ban">
     <div class="bi">🏆</div>
@@ -167,12 +162,11 @@
 
   <div class="div"></div>
 
-  <!-- CALENDAR & STATS -->
   <div class="gs">
-    <div class="tabs">
-      <div class="tab active" id="tabOylik">Oylik</div>
-      <div class="tab" id="tabHaftalik">Haftalik</div>
-      <div class="tab" id="tabYillik">Yillik</div>
+    <div class="tabs" id="tabContainer">
+      <div class="tab active" data-tab="oylik">Oylik</div>
+      <div class="tab" data-tab="haftalik">Haftalik</div>
+      <div class="tab" data-tab="yillik">Yillik</div>
     </div>
     
     <div class="gh">
@@ -185,7 +179,6 @@
   </div>
 </div>
 
-<!-- ADD MODAL -->
 <div class="mo" id="am">
   <div class="ms" id="ams">
     <div class="mh"></div>
@@ -202,7 +195,6 @@
   </div>
 </div>
 
-<!-- COMMENT MODAL -->
 <div class="mo" id="cm">
   <div class="ms">
     <div class="mh"></div>
@@ -216,7 +208,6 @@
   </div>
 </div>
 
-<!-- DELETE MODAL -->
 <div class="mo" id="dm">
   <div class="ms" style="text-align:center;">
     <div class="mh"></div>
@@ -234,6 +225,7 @@
 
 <script>
 (async function(){
+  // ⚠️ SHU YERGA SERVERINGIZ LINKINI QO'YING
   const BACKEND_URL = "https://my-telegram-bot-3772.onrender.com"; 
   const TELEGRAM_ID = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 5471176468;
 
@@ -259,7 +251,7 @@
   let DONE = new Set();
   const hl=document.getElementById('hl');
 
-  // SERVERDAN YUKLASH
+  // LOAD DATA FROM API
   async function loadData() {
     try {
       const res = await fetch(`${BACKEND_URL}/api/get_habits_data?user_id=${TELEGRAM_ID}`);
@@ -300,34 +292,79 @@
       const card=document.createElement('div');
       card.className='hc'+(isDone?' done':'');
       card.id='c-'+h.id;
+      card.dataset.id = h.id;
       card.style.cssText=`--cc:${h.color};--cd:${h.dim}`;
       card.innerHTML=`
         <div class="ci">${h.icon}</div>
-        <div class="cb">
+        <div class="cb toggle-target">
           <div class="cn">${esc(h.name)}</div>
           <div class="cdesc">${esc(h.desc||'')}</div>
         </div>
         <div class="actions">
-          <div class="action-btn del" title="O'chirish">🗑️</div>
-          <div class="action-btn cmt" title="Izoh">💬</div>
-          <div class="ck${isDone?' on':''}" id="ck-${h.id}">
+          <div class="action-btn del delete-target" data-name="${esc(h.name)}" title="O'chirish">🗑️</div>
+          <div class="action-btn cmt comment-target" title="Izoh">💬</div>
+          <div class="ck toggle-target ${isDone?' on':''}" id="ck-${h.id}">
              <span class="tk">✓</span>
           </div>
         </div>`;
-      
-      // JAVASCRIPT ORQALI BOG'LASH (CSP dan qochish uchun)
-      card.querySelector('.cb').addEventListener('click', () => toggleHabit(h.id));
-      card.querySelector('.ck').addEventListener('click', (e) => { e.stopPropagation(); toggleHabit(h.id); });
-      card.querySelector('.action-btn.del').addEventListener('click', (e) => { e.stopPropagation(); openDelete(h.id, h.name); });
-      card.querySelector('.action-btn.cmt').addEventListener('click', (e) => { e.stopPropagation(); openComment(h.id); });
-
       hl.appendChild(card);
     });
   }
 
   function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
-  // BELGILASH (Toggle)
+  // GLOBAL EVENT LISTENER (EVENT DELEGATION - eng ishonchli usul)
+  document.addEventListener('click', async function(e) {
+    // 1. Toggle bosilsa
+    const toggleTarget = e.target.closest('.toggle-target');
+    if (toggleTarget) {
+      const card = toggleTarget.closest('.hc');
+      if(card) {
+        const id = card.dataset.id;
+        await toggleHabit(id);
+      }
+    }
+    
+    // 2. Delete bosilsa
+    const deleteTarget = e.target.closest('.delete-target');
+    if (deleteTarget) {
+      const card = deleteTarget.closest('.hc');
+      if(card) {
+        const id = card.dataset.id;
+        const name = deleteTarget.dataset.name;
+        openDelete(id, name);
+      }
+    }
+
+    // 3. Comment bosilsa
+    const commentTarget = e.target.closest('.comment-target');
+    if (commentTarget) {
+      const card = commentTarget.closest('.hc');
+      if(card) {
+        openComment(card.dataset.id);
+      }
+    }
+
+    // 4. Tab bosilsa
+    const tabTarget = e.target.closest('.tab');
+    if (tabTarget) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tabTarget.classList.add('active');
+      const tabName = tabTarget.dataset.tab;
+      
+      const sv = document.getElementById('statsView');
+      if(tabName === 'oylik') {
+          document.getElementById('monthNameTitle').textContent = `Oylik Statistika (${MONTHS[today.getMonth()]})`;
+          sv.innerHTML = '<div class="cal-grid" id="calGrid"></div>';
+          buildCalendar();
+      } else {
+          document.getElementById('monthNameTitle').textContent = tabName === 'haftalik' ? 'Haftalik Faollik' : 'Yillik Faollik';
+          sv.innerHTML = `<div style="text-align:center; padding: 40px 20px; color: var(--sec); font-size:12px; background:var(--card2); border-radius:16px;">Tez kunda qo'shiladi 🚀</div>`;
+      }
+    }
+  });
+
+  // BELGILASH (Toggle Logic)
   async function toggleHabit(id) {
     const card=document.getElementById('c-'+id);
     const ck=document.getElementById('ck-'+id);
@@ -371,26 +408,6 @@
     document.getElementById('stit').textContent=tot===0?'Odat qo\'shing 🌱':tits[Math.min(Math.round((dn/tot)*4),4)];
     document.getElementById('ban').classList.toggle('on',tot>0&&dn===tot);
   }
-
-  // TABS LOGIC
-  function switchTab(tabName, element) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    element.classList.add('active');
-    
-    const sv = document.getElementById('statsView');
-    if(tabName === 'oylik') {
-        document.getElementById('monthNameTitle').textContent = `Oylik Statistika (${MONTHS[today.getMonth()]})`;
-        sv.innerHTML = '<div class="cal-grid" id="calGrid"></div>';
-        buildCalendar();
-    } else {
-        document.getElementById('monthNameTitle').textContent = tabName === 'haftalik' ? 'Haftalik Faollik' : 'Yillik Faollik';
-        sv.innerHTML = `<div style="text-align:center; padding: 40px 20px; color: var(--sec); font-size:12px; background:var(--card2); border-radius:16px;">Tez kunda qo'shiladi 🚀</div>`;
-    }
-  }
-
-  document.getElementById('tabOylik').addEventListener('click', function() { switchTab('oylik', this); });
-  document.getElementById('tabHaftalik').addEventListener('click', function() { switchTab('haftalik', this); });
-  document.getElementById('tabYillik').addEventListener('click', function() { switchTab('yillik', this); });
 
   // CALENDAR CHIZISH
   function buildCalendar(){
