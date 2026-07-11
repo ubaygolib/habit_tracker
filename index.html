@@ -117,6 +117,7 @@
     .btn-g{background:var(--card2);color:var(--sec)}
     .btn-d{background:#ff6b7a;color:#fff}
     
+    /* TOAST */
     .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:12px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:opacity .28s,transform .28s;}
     .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
     .empty{text-align:center;padding:36px 20px;color:var(--dim)}
@@ -125,12 +126,11 @@
 <body>
 
 <div class="ht" id="ht">
-  <!-- HEADER -->
   <div class="hd">
     <div class="hd-left">
       <div class="eyebrow" id="eyebrow">Yuklanmoqda...</div>
       <div class="htitle">Odatlar <span style="font-size:22px">🎯</span>
-        <div class="add-b" onclick="openAddModal()">＋</div>
+        <div class="add-b" id="openAdd">＋</div>
       </div>
       <div class="dstr" id="dstr"></div>
     </div>
@@ -143,7 +143,6 @@
     </div>
   </div>
 
-  <!-- STATUS BAR -->
   <div class="st-bar">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
@@ -157,7 +156,6 @@
   <div class="sl">BUGUNGI VAZIFALAR</div>
   <div class="cl" id="hl"></div>
 
-  <!-- BANNER -->
   <div style="height:14px"></div>
   <div class="banner" id="ban">
     <div class="bi">🏆</div>
@@ -166,27 +164,23 @@
 
   <div class="div"></div>
 
-  <!-- CALENDAR & STATS -->
   <div class="gs">
-    <!-- TABS -->
     <div class="tabs">
-      <div class="tab active" onclick="switchTab('oylik', this)">Oylik</div>
-      <div class="tab" onclick="switchTab('haftalik', this)">Haftalik</div>
-      <div class="tab" onclick="switchTab('yillik', this)">Yillik</div>
+      <div class="tab active" id="tabOylik">Oylik</div>
+      <div class="tab" id="tabHaftalik">Haftalik</div>
+      <div class="tab" id="tabYillik">Yillik</div>
     </div>
     
     <div class="gh">
       <div class="gt" id="monthNameTitle">Statistika</div>
     </div>
     
-    <!-- STATS VIEW -->
     <div id="statsView">
       <div class="cal-grid" id="calGrid"></div>
     </div>
   </div>
 </div>
 
-<!-- ADD MODAL -->
 <div class="mo" id="am">
   <div class="ms" id="ams">
     <div class="mh"></div>
@@ -197,13 +191,12 @@
     <div class="fb"><label class="fl">Ikonka</label><div class="eg" id="eg"></div></div>
     <div class="fb"><label class="fl">Rang</label><div class="cr" id="cr"></div></div>
     <div class="ma">
-      <button class="btn btn-g" onclick="document.getElementById('am').classList.remove('on')">Bekor qilish</button>
+      <button class="btn btn-g" id="acn">Bekor qilish</button>
       <button class="btn btn-p" id="aok" disabled>Qo'shish</button>
     </div>
   </div>
 </div>
 
-<!-- COMMENT MODAL -->
 <div class="mo" id="cm">
   <div class="ms">
     <div class="mh"></div>
@@ -211,13 +204,12 @@
     <div class="msub">Bugungi natijangiz sababini qayd eting.</div>
     <div class="fb"><textarea class="ti" id="cval" rows="3" placeholder="Bugun charchagandim..." style="resize:none"></textarea></div>
     <div class="ma">
-      <button class="btn btn-g" onclick="document.getElementById('cm').classList.remove('on')">Bekor</button>
+      <button class="btn btn-g" id="ccn">Bekor</button>
       <button class="btn btn-p" style="--pk:#7c6fff" id="cok">Saqlash</button>
     </div>
   </div>
 </div>
 
-<!-- DELETE MODAL -->
 <div class="mo" id="dm">
   <div class="ms" style="text-align:center;">
     <div class="mh"></div>
@@ -225,7 +217,7 @@
     <div class="mtit" id="dtit">O'chirilsinmi?</div>
     <div class="msub">Bu amalni qaytarib bo'lmaydi.</div>
     <div class="ma">
-      <button class="btn btn-g" onclick="document.getElementById('dm').classList.remove('on')">Bekor</button>
+      <button class="btn btn-g" id="dcn">Bekor</button>
       <button class="btn btn-d" id="dok">O'chirish</button>
     </div>
   </div>
@@ -261,7 +253,7 @@
   let DONE = new Set();
   const hl=document.getElementById('hl');
 
-  // SERVERDAN YUKLASH
+  // LOAD DATA FROM API
   async function loadData() {
     try {
       const res = await fetch(`${BACKEND_URL}/api/get_habits_data?user_id=${TELEGRAM_ID}`);
@@ -305,17 +297,24 @@
       card.style.cssText=`--cc:${h.color};--cd:${h.dim}`;
       card.innerHTML=`
         <div class="ci">${h.icon}</div>
-        <div class="cb" onclick="toggleHabit('${h.id}')">
+        <div class="cb">
           <div class="cn">${esc(h.name)}</div>
           <div class="cdesc">${esc(h.desc||'')}</div>
         </div>
         <div class="actions">
-          <div class="action-btn del" onclick="openDelete('${h.id}', '${esc(h.name)}'); event.stopPropagation();" title="O'chirish">🗑️</div>
-          <div class="action-btn" onclick="openComment('${h.id}'); event.stopPropagation();" title="Izoh">💬</div>
-          <div class="ck${isDone?' on':''}" id="ck-${h.id}" onclick="toggleHabit('${h.id}'); event.stopPropagation();">
+          <div class="action-btn del" title="O'chirish">🗑️</div>
+          <div class="action-btn cmt" title="Izoh">💬</div>
+          <div class="ck${isDone?' on':''}" id="ck-${h.id}">
              <span class="tk">✓</span>
           </div>
         </div>`;
+      
+      // JAVASCRIPT ORQALI HODISALAR ULANISHI (TELEGRAM BLOKLAMASLIGI UCHUN)
+      card.querySelector('.cb').onclick = () => toggleHabit(h.id);
+      card.querySelector('.ck').onclick = (e) => { e.stopPropagation(); toggleHabit(h.id); };
+      card.querySelector('.action-btn.del').onclick = (e) => { e.stopPropagation(); openDelete(h.id, h.name); };
+      card.querySelector('.action-btn.cmt').onclick = (e) => { e.stopPropagation(); openComment(h.id); };
+
       hl.appendChild(card);
     });
   }
@@ -323,7 +322,7 @@
   function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
   // BELGILASH (Toggle)
-  window.toggleHabit = async function(id) {
+  async function toggleHabit(id) {
     const card=document.getElementById('c-'+id);
     const ck=document.getElementById('ck-'+id);
     const wasDone = DONE.has(id);
@@ -337,7 +336,9 @@
       try{window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');}catch(e){}
     }
     
-    // UI Local yangilanadi
+    DM[dk]=Array.from(DONE);
+    
+    // Oylik statistikani lokal yangilash (tezkor UI uchun)
     const bugun = today.getDate();
     if(wasDone) MONTHLY_STATS[bugun] = Math.max(0, (MONTHLY_STATS[bugun]||1)-1);
     else MONTHLY_STATS[bugun] = (MONTHLY_STATS[bugun]||0)+1;
@@ -351,7 +352,7 @@
             body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: id, date: dk })
         });
     } catch(e) { toast("Saqlashda xato!"); }
-  };
+  }
 
   function updateUI(){
     const tot=HABITS.length,dn=DONE.size;
@@ -369,7 +370,7 @@
   }
 
   // TABS LOGIC
-  window.switchTab = function(tabName, element) {
+  function switchTab(tabName, element) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     element.classList.add('active');
     
@@ -382,7 +383,11 @@
         document.getElementById('monthNameTitle').textContent = tabName === 'haftalik' ? 'Haftalik Faollik' : 'Yillik Faollik';
         sv.innerHTML = `<div style="text-align:center; padding: 40px 20px; color: var(--sec); font-size:12px; background:var(--card2); border-radius:16px;">Tez kunda qo'shiladi 🚀</div>`;
     }
-  };
+  }
+
+  document.getElementById('tabOylik').onclick = function() { switchTab('oylik', this); };
+  document.getElementById('tabHaftalik').onclick = function() { switchTab('haftalik', this); };
+  document.getElementById('tabYillik').onclick = function() { switchTab('yillik', this); };
 
   // CALENDAR CHIZISH
   function buildCalendar(){
@@ -428,13 +433,14 @@
   }
   function applyPK(){document.getElementById('ams').style.setProperty('--pk',pc.c);}
 
-  window.openAddModal = () => {
+  document.getElementById('openAdd').onclick = () => {
     document.getElementById('iname').value=''; document.getElementById('idesc').value='';
     pe=EM[Math.floor(Math.random()*EM.length)]; pc=PAL[HABITS.length%PAL.length];
     renderEG(); renderCR(); applyPK();
     document.getElementById('aok').disabled=true;
     am.classList.add('on');
   };
+  document.getElementById('acn').onclick = () => am.classList.remove('on');
   document.getElementById('iname').addEventListener('input',e=>{document.getElementById('aok').disabled=!e.target.value.trim();});
   
   document.getElementById('aok').onclick = async ()=>{
@@ -456,9 +462,10 @@
 
   // DELETE MODAL
   const dm=document.getElementById('dm'); let delId=null;
-  window.openDelete = (id, name) => {
+  function openDelete(id, name) {
     delId = id; document.getElementById('dtit').textContent = `"${name}" o'chirilsinmi?`; dm.classList.add('on');
-  };
+  }
+  document.getElementById('dcn').onclick = () => dm.classList.remove('on');
   document.getElementById('dok').onclick = async () => {
     if(!delId) return;
     const btn = document.getElementById('dok'); btn.textContent = "...";
@@ -474,8 +481,13 @@
 
   // COMMENT MODAL
   const cm = document.getElementById('cm');
-  window.openComment = (id) => { cm.dataset.activeId = id; document.getElementById('cval').value = ''; cm.classList.add('on'); };
-  document.getElementById('cok').onclick = () => { toast("Izoh saqlandi (Tez kunda bazaga ulanadi)!"); cm.classList.remove('on'); };
+  function openComment(id) { 
+      cm.dataset.activeId = id; document.getElementById('cval').value = ''; cm.classList.add('on'); 
+  }
+  document.getElementById('ccn').onclick = () => cm.classList.remove('on');
+  document.getElementById('cok').onclick = () => { 
+      toast("Izoh saqlandi (Tez kunda bazaga ulanadi)!"); cm.classList.remove('on'); 
+  };
 
   let tt; function toast(msg){
     const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('on');
