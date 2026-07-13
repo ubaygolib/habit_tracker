@@ -15,6 +15,14 @@
       --txt:#eeeeff;--sec:#7878aa;--dim:#3a3a5a;--rad:18px;
     }
     body { background: var(--bg); color: var(--txt); font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+    
+    /* Telegram WebApp da yozuv maydonlari ishlashi uchun eng muhim kod */
+    input, textarea {
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        cursor: text;
+    }
+
     .ht{min-height:100vh;padding:0 0 40px;position:relative;}
     .ht::before{content:'';position:absolute;width:300px;height:300px;background:rgba(124,111,255,.07);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none}
     .ht::after{content:'';position:absolute;width:220px;height:220px;background:rgba(93,224,197,.05);border-radius:50%;filter:blur(80px);bottom:120px;left:-60px;pointer-events:none}
@@ -24,9 +32,9 @@
     .hd-left .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);font-weight:600}
     .hd-left .htitle{font-size:24px;font-weight:800;letter-spacing:-.4px;margin-top:2px;display:flex;align-items:center;gap:8px}
     .hd-left .dstr{font-size:12px;color:var(--sec);margin-top:2px}
-    .add-b{width:28px;height:28px;border-radius:9px;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer; transition: transform 0.1s;}
-    .add-b:active{transform: scale(0.9); background: var(--acc); border-color: var(--acc);}
-
+    .add-b{width:28px;height:28px;border-radius:9px;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
+    .add-b:active{transform: scale(0.9); background:var(--acc); border-color:var(--acc)}
+    
     /* RING */
     .ring-w{position:relative;width:72px;height:72px;flex-shrink:0}
     .ring-w svg{transform:rotate(-90deg)}
@@ -52,8 +60,8 @@
     .hc.done{border-color:rgba(var(--cc-rgb,124,111,255),.2);background:var(--cd,var(--card))}
     .ci{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--cd,var(--acc-g));flex-shrink:0}
     .cb{flex:1;min-width:0; cursor:pointer;}
-    .cn{font-size:14px;font-weight:600; user-select:none;}
-    .cdesc{font-size:11px;color:var(--sec);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; user-select:none;}
+    .cn{font-size:14px;font-weight:600;}
+    .cdesc{font-size:11px;color:var(--sec);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     
     /* ACTIONS */
     .actions { display: flex; align-items: center; gap: 6px; }
@@ -98,7 +106,7 @@
     .stat-bar-fill { height: 100%; background: var(--acc); border-radius: 99px; transition: width 0.5s ease-out;}
     
     /* MODALS */
-    .mo{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s}
+    .mo{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s}
     .mo.on{opacity:1;pointer-events:auto}
     .ms{width:100%;max-width:440px;background:var(--card);border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:10px 18px max(18px,env(safe-area-inset-bottom)) 18px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s}
     .mo.on .ms{transform:translateY(0)}
@@ -131,6 +139,7 @@
 <body>
 
 <div class="ht" id="ht">
+  <!-- HEADER -->
   <div class="hd">
     <div class="hd-left">
       <div class="eyebrow" id="eyebrow">Yuklanmoqda...</div>
@@ -148,6 +157,7 @@
     </div>
   </div>
 
+  <!-- STATUS BAR -->
   <div class="st-bar">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
@@ -161,6 +171,7 @@
   <div class="sl">BUGUNGI VAZIFALAR</div>
   <div class="cl" id="hl"></div>
 
+  <!-- BANNER -->
   <div style="height:14px"></div>
   <div class="banner" id="ban">
     <div class="bi">🏆</div>
@@ -169,8 +180,9 @@
 
   <div class="div"></div>
 
+  <!-- CALENDAR & STATS -->
   <div class="gs">
-    <div class="tabs">
+    <div class="tabs" id="tabContainer">
       <div class="tab active" data-tab="oylik">Oylik</div>
       <div class="tab" data-tab="haftalik">Haftalik</div>
       <div class="tab" data-tab="yillik">Yillik</div>
@@ -184,6 +196,7 @@
   </div>
 </div>
 
+<!-- ADD MODAL -->
 <div class="mo" id="am">
   <div class="ms" id="ams">
     <div class="mh"></div>
@@ -200,6 +213,7 @@
   </div>
 </div>
 
+<!-- COMMENT MODAL -->
 <div class="mo" id="cm">
   <div class="ms">
     <div class="mh"></div>
@@ -213,6 +227,7 @@
   </div>
 </div>
 
+<!-- DELETE MODAL -->
 <div class="mo" id="dm">
   <div class="ms" style="text-align:center;">
     <div class="mh"></div>
@@ -231,7 +246,7 @@
 <script>
 (async function(){
   // ⚠️ SHU YERGA SERVERINGIZ LINKINI QO'YING
-  const BACKEND_URL = "https://my-telegram-bot-3772.onrender.com/"; 
+  const BACKEND_URL = "https://my-telegram-bot-3772.onrender.com"; 
   const TELEGRAM_ID = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 5471176468;
 
   const PAL=[
@@ -258,6 +273,7 @@
   
   let currentDelId = null;
   let currentCmtId = null;
+  let pe=EM[0], pc=PAL[0];
 
   async function loadData() {
     try {
@@ -321,9 +337,15 @@
 
   function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
-  // GLOBAL EVENT LISTENER (EVENT DELEGATION - eng ishonchli usul)
+  // EVENT DELEGATION (Hamma bosilishlar xavfsiz shu yerda)
   document.addEventListener('click', async function(e) {
-    // 1. Toggle bosilsa
+    // Modal yopish (Fondan bosganda)
+    if(e.target.classList.contains('mo')) {
+        e.target.classList.remove('on');
+        return;
+    }
+    
+    // Toggle (Belgilash)
     const toggleTarget = e.target.closest('.toggle-target');
     if (toggleTarget) {
       const card = toggleTarget.closest('.hc');
@@ -331,7 +353,7 @@
       return;
     }
     
-    // 2. Delete bosilsa
+    // O'chirish
     const deleteTarget = e.target.closest('.delete-target');
     if (deleteTarget) {
       const card = deleteTarget.closest('.hc');
@@ -343,7 +365,7 @@
       return;
     }
 
-    // 3. Comment bosilsa
+    // Komentariya (Izoh)
     const commentTarget = e.target.closest('.comment-target');
     if (commentTarget) {
       const card = commentTarget.closest('.hc');
@@ -356,7 +378,7 @@
       return;
     }
 
-    // 4. Tab bosilsa
+    // Statistika Tablari
     const tabTarget = e.target.closest('.tab');
     if (tabTarget) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -382,11 +404,28 @@
           const totalDone = Object.values(MONTHLY_STATS).reduce((a,b)=>a+b, 0);
           sv.innerHTML = `
             <div class="stat-bar-container">
-              <div class="stat-bar-title">2026 Yil - Jami ${totalDone} marta bajarildi</div>
+              <div class="stat-bar-title">Yil davomida jami ${totalDone} marta bajarildi</div>
               <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:0%"></div></div>
             </div>`;
           setTimeout(() => { document.querySelector('.stat-bar-fill').style.width = '30%'; }, 50);
       }
+      return;
+    }
+
+    // Ikonka (Stiker) tanlash
+    const eoTarget = e.target.closest('.eo');
+    if (eoTarget) {
+      pe = EM[eoTarget.dataset.idx];
+      renderEG();
+      return;
+    }
+
+    // Rang tanlash
+    const coTarget = e.target.closest('.co');
+    if (coTarget) {
+      pc = PAL[coTarget.dataset.idx];
+      renderCR();
+      document.getElementById('ams').style.setProperty('--pk',pc.c);
       return;
     }
   });
@@ -467,33 +506,32 @@
     cg.innerHTML = htmlBuffer;
   }
 
-  // ADD MODAL
-  const am=document.getElementById('am');
-  let pe=EM[0],pc=PAL[0];
+  // MODAL EMOJI VA RANGLARI
   function renderEG(){
     const eg=document.getElementById('eg'); let h='';
-    EM.forEach(em=>{ h += `<div class="eo${em===pe?' sel':''}" data-em="${em}">${em}</div>`; });
+    EM.forEach((em, i)=>{ h += `<div class="eo${em===pe?' sel':''}" data-idx="${i}">${em}</div>`; });
     eg.innerHTML = h;
-    eg.querySelectorAll('.eo').forEach(el => el.addEventListener('click', function(){ pe=this.dataset.em; renderEG(); }));
   }
   function renderCR(){
     const cr=document.getElementById('cr'); let h='';
-    PAL.forEach(p=>{ h += `<div class="co${p.c===pc.c?' sel':''}" data-c="${p.c}" data-d="${p.d}" style="background:${p.c}"></div>`; });
+    PAL.forEach((p, i)=>{ h += `<div class="co${p.c===pc.c?' sel':''}" data-idx="${i}" style="background:${p.c}"></div>`; });
     cr.innerHTML = h;
-    cr.querySelectorAll('.co').forEach(el => el.addEventListener('click', function(){ pc={c:this.dataset.c, d:this.dataset.d}; renderCR(); document.getElementById('ams').style.setProperty('--pk',pc.c); }));
   }
 
+  // TUGMALAR ISHINI BOG'LASH
   document.getElementById('btnOpenAddModal').addEventListener('click', () => {
     document.getElementById('iname').value=''; document.getElementById('idesc').value='';
     pe=EM[Math.floor(Math.random()*EM.length)]; pc=PAL[HABITS.length%PAL.length];
     renderEG(); renderCR(); document.getElementById('ams').style.setProperty('--pk',pc.c);
     document.getElementById('btnSaveAdd').disabled=true;
-    am.classList.add('on');
+    document.getElementById('am').classList.add('on');
   });
   
-  document.getElementById('btnCancelAdd').addEventListener('click', () => am.classList.remove('on'));
+  document.getElementById('btnCancelAdd').addEventListener('click', () => document.getElementById('am').classList.remove('on'));
   
-  document.getElementById('iname').addEventListener('input',e=>{document.getElementById('btnSaveAdd').disabled=!e.target.value.trim();});
+  document.getElementById('iname').addEventListener('input', e => {
+    document.getElementById('btnSaveAdd').disabled = !e.target.value.trim();
+  });
   
   document.getElementById('btnSaveAdd').addEventListener('click', async ()=>{
     const n=document.getElementById('iname').value.trim(), d=document.getElementById('idesc').value.trim();
@@ -505,14 +543,12 @@
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: TELEGRAM_ID, name: n, desc: d, icon: pe, color: pc.c })
         });
-        if(res.ok) { await loadData(); am.classList.remove('on'); toast(`"${n}" qo'shildi ✅`); }
+        if(res.ok) { await loadData(); document.getElementById('am').classList.remove('on'); toast(`"${n}" qo'shildi ✅`); }
     } catch(e) { toast("Xatolik!"); }
     btn.textContent = "Qo'shish";
   });
 
-  // DELETE MODAL
-  const dm=document.getElementById('dm');
-  document.getElementById('btnCancelDel').addEventListener('click', () => dm.classList.remove('on'));
+  document.getElementById('btnCancelDel').addEventListener('click', () => document.getElementById('dm').classList.remove('on'));
   document.getElementById('btnConfirmDel').addEventListener('click', async () => {
     if(!currentDelId) return;
     const btn = document.getElementById('btnConfirmDel'); btn.textContent = "...";
@@ -521,14 +557,12 @@
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: currentDelId })
         });
-        await loadData(); dm.classList.remove('on'); toast(`O'chirildi 🗑️`);
+        await loadData(); document.getElementById('dm').classList.remove('on'); toast(`O'chirildi 🗑️`);
     } catch(e) { toast("O'chirishda xato!"); }
     btn.textContent = "O'chirish";
   });
 
-  // COMMENT MODAL
-  const cm = document.getElementById('cm');
-  document.getElementById('btnCancelCmt').addEventListener('click', () => cm.classList.remove('on'));
+  document.getElementById('btnCancelCmt').addEventListener('click', () => document.getElementById('cm').classList.remove('on'));
   document.getElementById('btnSaveCmt').addEventListener('click', async () => {
     const txt = document.getElementById('cval').value.trim();
     const btn = document.getElementById('btnSaveCmt'); btn.textContent = "...";
@@ -541,7 +575,7 @@
         COMMENTS[dk][currentCmtId] = txt; 
         render(); 
         toast("Izoh saqlandi ✅");
-        cm.classList.remove('on');
+        document.getElementById('cm').classList.remove('on');
     } catch(e) { toast("Xatolik!"); }
     btn.textContent = "Saqlash";
   });
