@@ -4,37 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Habit Tracker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
       --bg:#0c0c12;--card:#141420;--card2:#1c1c2e;
-      --acc:#7c6fff;--acc2:#5de0c5;--acc-g:rgba(124,111,255,.15);
-      --r:#ff6b7a;--g:#43e097;--y:#ffd166;--p:#b67cff;--o:#ff9f5b;--t:#4ecdc4;
+      --acc:#7c6fff;--acc-g:rgba(124,111,255,.15);
       --txt:#eeeeff;--sec:#7878aa;--dim:#3a3a5a;--rad:18px;
+      --danger:#ff6b7a;
     }
-    body { background: var(--bg); color: var(--txt); font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-    
-    /* Telegram WebApp da yozuv maydonlari ishlashi uchun eng muhim kod */
-    input, textarea {
-        -webkit-user-select: text !important;
-        user-select: text !important;
-        cursor: text;
-    }
+    body{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;-webkit-tap-highlight-color:transparent;min-height:100vh;}
+    input,textarea{-webkit-user-select:text!important;user-select:text!important;cursor:text;}
+    ::-webkit-scrollbar{width:0;height:0}
 
-    .ht{min-height:100vh;padding:0 0 40px;position:relative;}
-    .ht::before{content:'';position:absolute;width:300px;height:300px;background:rgba(124,111,255,.07);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none}
-    .ht::after{content:'';position:absolute;width:220px;height:220px;background:rgba(93,224,197,.05);border-radius:50%;filter:blur(80px);bottom:120px;left:-60px;pointer-events:none}
+    /* ORBS */
+    .ht{min-height:100vh;padding:0 0 50px;position:relative;}
+    .ht::before{content:'';position:fixed;width:300px;height:300px;background:rgba(124,111,255,.07);border-radius:50%;filter:blur(80px);top:-80px;right:-80px;pointer-events:none;z-index:0}
+    .ht::after{content:'';position:fixed;width:220px;height:220px;background:rgba(93,224,197,.05);border-radius:50%;filter:blur(80px);bottom:120px;left:-60px;pointer-events:none;z-index:0}
 
     /* HEADER */
     .hd{padding:22px 20px 14px;position:sticky;top:0;background:linear-gradient(180deg,var(--bg) 65%,transparent);z-index:20;display:flex;align-items:flex-start;justify-content:space-between;}
-    .hd-left .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);font-weight:600}
-    .hd-left .htitle{font-size:24px;font-weight:800;letter-spacing:-.4px;margin-top:2px;display:flex;align-items:center;gap:8px}
-    .hd-left .dstr{font-size:12px;color:var(--sec);margin-top:2px}
-    .add-b{width:28px;height:28px;border-radius:9px;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
-    .add-b:active{transform: scale(0.9); background:var(--acc); border-color:var(--acc)}
-    
+    .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);font-weight:600}
+    .htitle{font-size:24px;font-weight:800;letter-spacing:-.4px;margin-top:2px;display:flex;align-items:center;gap:8px}
+    .dstr{font-size:12px;color:var(--sec);margin-top:2px}
+    .add-b{width:28px;height:28px;border-radius:9px;background:var(--card2);border:1.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:var(--txt);flex-shrink:0;transition:all .15s;}
+    .add-b:active{transform:scale(.9);background:var(--acc);border-color:var(--acc)}
+
     /* RING */
     .ring-w{position:relative;width:72px;height:72px;flex-shrink:0}
     .ring-w svg{transform:rotate(-90deg)}
@@ -51,64 +46,102 @@
     .prog-t{height:4px;background:var(--card2);border-radius:99px;margin-top:10px;overflow:hidden}
     .prog-f{height:100%;background:linear-gradient(90deg,var(--acc),#a78bfa);border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
 
+    /* SYNC BADGE */
+    .sync-badge{display:none;align-items:center;gap:6px;margin:0 20px 12px;background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);border-radius:99px;padding:6px 12px;font-size:11px;font-weight:600;color:#ffd166;}
+    .sync-badge.show{display:flex}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spin{animation:spin .7s linear infinite;display:inline-block}
+
     .sl{padding:0 20px 10px;font-size:11px;font-weight:600;color:var(--sec);letter-spacing:.08em;text-transform:uppercase;position:relative;z-index:1}
 
     /* CARDS */
     .cl{padding:0 20px;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
     .hc{background:var(--card);border-radius:var(--rad);padding:14px 14px 14px 17px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,.04);transition:transform .18s,border-color .3s,background .3s;position:relative;overflow:hidden;}
     .hc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3.5px;border-radius:4px 0 0 4px;background:var(--cc,var(--acc));opacity:.9}
-    .hc.done{border-color:rgba(var(--cc-rgb,124,111,255),.2);background:var(--cd,var(--card))}
+    .hc.done{background:var(--cd,var(--card));border-color:var(--cc-border,rgba(124,111,255,.2))}
+    .hc:active{transform:scale(.98)}
     .ci{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--cd,var(--acc-g));flex-shrink:0}
-    .cb{flex:1;min-width:0; cursor:pointer;}
-    .cn{font-size:14px;font-weight:600;}
-    .cdesc{font-size:11px;color:var(--sec);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    
+    .cb{flex:1;min-width:0;cursor:pointer;}
+    .cn{font-size:14px;font-weight:600}
+    .cdesc{font-size:11px;color:var(--sec);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .csk{font-size:10px;color:var(--dim);margin-top:3px}
+
     /* ACTIONS */
-    .actions { display: flex; align-items: center; gap: 6px; }
-    .action-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; border:1px solid transparent; transition: all 0.2s;}
-    .action-btn:active { transform: scale(0.9); }
-    .action-btn.del { background: rgba(255,107,122,.1); color: #ff6b7a; }
-    .action-btn.cmt.active-cmt { background: var(--acc-g); color: var(--acc); border-color: rgba(124,111,255,.3); }
-    
-    .ck{width:32px;height:32px;border-radius:50%;border:2px solid var(--cc,var(--acc));display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;}
+    .actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .act-btn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:all .15s;border:1px solid transparent;background:var(--card2);}
+    .act-btn:active{transform:scale(.88)}
+    .act-btn.del{background:rgba(255,107,122,.1);color:var(--danger)}
+    .act-btn.cmt.has-cmt{background:var(--acc-g);border-color:rgba(124,111,255,.3)}
+
+    /* CHECKBOX */
+    .ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--cc,var(--acc));display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;transition:background .25s,border-color .25s}
     .ck.on{background:var(--cc,var(--acc));border-color:var(--cc,var(--acc))}
     .ck .tk{opacity:0;transform:scale(.4) rotate(-15deg);transition:all .25s;font-size:13px;color:#0c0c12;font-weight:900}
     .ck.on .tk{opacity:1;transform:scale(1) rotate(0)}
     @keyframes rpl{from{transform:scale(0);opacity:.6}to{transform:scale(2.8);opacity:0}}
     .rpl{position:absolute;border-radius:50%;width:100%;height:100%;background:var(--cc,var(--acc));animation:rpl .5s ease-out forwards;pointer-events:none}
 
-    /* BANNER & DIVIDER */
+    @keyframes ci-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+    .hc.new-card{animation:ci-in .35s cubic-bezier(.2,.8,.2,1)}
+    @keyframes ci-out{to{opacity:0;transform:translateX(30px);max-height:0;margin:0;padding-top:0;padding-bottom:0}}
+    .hc.bye{animation:ci-out .28s ease forwards;pointer-events:none}
+
+    /* EMPTY */
+    .empty{text-align:center;padding:40px 20px;color:var(--dim)}
+    .empty .ei{font-size:32px;margin-bottom:10px}
+    .empty p{font-size:13px;color:var(--sec)}
+
+    /* BANNER */
     .banner{margin:14px 20px;background:linear-gradient(135deg,var(--acc),#a78bfa);border-radius:var(--rad);padding:13px 16px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:all .5s;pointer-events:none;}
     .banner.on{opacity:1;transform:translateY(0);pointer-events:auto}
-    .bi{font-size:24px}
-    .bt h3{font-size:14px;font-weight:700}
-    .bt p{font-size:11px;color:rgba(255,255,255,.7)}
-    .div{height:1px;background:rgba(255,255,255,.05);margin:20px 20px 0;}
 
-    /* STATS & CALENDAR */
-    .gs{padding:20px 20px 36px;position:relative;z-index:1}
-    .tabs{display: flex; gap: 8px; margin-bottom: 16px; background: var(--card2); padding: 4px; border-radius: 99px;}
-    .tab{flex:1; text-align:center; padding: 8px 0; border-radius: 99px; font-size: 12px; font-weight: 600; color: var(--sec); cursor: pointer; transition: 0.2s;}
-    .tab.active{background: var(--card); color: var(--txt); box-shadow: 0 2px 8px rgba(0,0,0,0.2);}
+    .div{height:1px;background:rgba(255,255,255,.05);margin:20px 20px 0}
+
+    /* CALENDAR / STATS */
+    .gs{padding:20px 20px 40px;position:relative;z-index:1}
+    .tabs-row{display:flex;gap:6px;margin-bottom:16px;background:var(--card2);padding:4px;border-radius:99px}
+    .tab{flex:1;text-align:center;padding:8px 0;border-radius:99px;font-size:12px;font-weight:600;color:var(--sec);cursor:pointer;transition:.2s}
+    .tab.active{background:var(--card);color:var(--txt);box-shadow:0 2px 8px rgba(0,0,0,.25)}
     .gh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
     .gt{font-size:15px;font-weight:700}
-    
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-    .day-lbl { text-align: center; font-size: 10px; font-weight: 600; color: var(--sec); margin-bottom: 4px; }
-    .cal-cell { aspect-ratio: 1; border-radius: 10px; background: var(--card2); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .cal-cell.today { outline: 1.5px solid var(--acc); outline-offset: 2px; }
-    .cal-num { font-size: 12px; font-weight: 700; z-index: 2;}
-    .cal-pct { font-size: 9px; color: rgba(255,255,255,0.8); font-weight: 700; z-index: 2; margin-top: 1px;}
-    
-    .stat-bar-container { background: var(--card2); border-radius: 12px; padding: 16px; margin-bottom: 8px;}
-    .stat-bar-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--txt); }
-    .stat-bar-bg { height: 8px; background: rgba(255,255,255,0.05); border-radius: 99px; overflow: hidden;}
-    .stat-bar-fill { height: 100%; background: var(--acc); border-radius: 99px; transition: width 0.5s ease-out;}
-    
+    .gss{font-size:11px;color:var(--sec)}
+
+    /* Oylik kalendar */
+    .cal-wrap{overflow-x:auto}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;min-width:280px}
+    .day-lbl{text-align:center;font-size:10px;font-weight:600;color:var(--sec);padding-bottom:4px}
+    .cal-cell{aspect-ratio:1;border-radius:10px;background:var(--card2);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:default}
+    .cal-cell.today{outline:1.5px solid var(--acc);outline-offset:2px}
+    .cal-cell .fill{position:absolute;bottom:0;left:0;right:0;background:rgba(124,111,255,.6);transition:height .5s}
+    .cal-num{font-size:11px;font-weight:700;position:relative;z-index:2}
+    .cal-pct{font-size:9px;color:rgba(255,255,255,.85);font-weight:700;position:relative;z-index:2;margin-top:1px}
+
+    /* Haftalik / Yillik stat */
+    .stat-card{background:var(--card2);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+    .stat-label{font-size:13px;font-weight:600;margin-bottom:8px}
+    .stat-sub{font-size:11px;color:var(--sec);margin-bottom:10px}
+    .bar-bg{height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+    .streak-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+    .streak-item{text-align:center}
+    .streak-val{font-size:20px;font-weight:800;color:var(--acc)}
+    .streak-key{font-size:10px;color:var(--sec);margin-top:2px}
+
+    /* GitHub Grid (Yillik) */
+    .gsc{overflow-x:auto;padding-bottom:4px;scroll-behavior:smooth}
+    .cg{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;gap:2.5px}
+    .gc{width:10px;height:10px;border-radius:2px;background:var(--card2)}
+    .gc.l1{background:#7c6fff33}.gc.l2{background:#7c6fff66}.gc.l3{background:#7c6fff99}.gc.l4{background:var(--acc)}
+    .gc.td{outline:2px solid var(--acc);outline-offset:1px}
+    .gc.td.ac{background:var(--acc)!important;animation:ptd 1.8s ease-in-out infinite}
+    @keyframes ptd{0%,100%{box-shadow:0 0 6px var(--acc)}50%{box-shadow:0 0 14px var(--acc)}}
+    .ml-wrap{position:relative;height:14px;margin-bottom:3px}
+    .mc{font-size:8px;color:var(--dim);font-weight:600;position:absolute}
+
     /* MODALS */
-    .mo{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(5px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s}
+    .mo{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s}
     .mo.on{opacity:1;pointer-events:auto}
-    .ms{width:100%;max-width:440px;background:var(--card);border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:10px 18px max(18px,env(safe-area-inset-bottom)) 18px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s}
+    .ms{width:100%;max-width:440px;background:var(--card);border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:10px 18px max(20px,env(safe-area-inset-bottom)) 18px;max-height:88vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.9,.25,1)}
     .mo.on .ms{transform:translateY(0)}
     .mh{width:32px;height:4px;background:var(--card2);border-radius:99px;margin:2px auto 14px}
     .mtit{font-size:18px;font-weight:800;margin-bottom:3px}
@@ -116,35 +149,41 @@
     .fl{font-size:11px;font-weight:600;color:var(--sec);letter-spacing:.04em;text-transform:uppercase;margin-bottom:7px;display:block}
     .fb{margin-bottom:16px}
     .ti{width:100%;background:var(--card2);border:1.5px solid rgba(255,255,255,.07);border-radius:13px;padding:12px 13px;font-size:14px;color:var(--txt);font-family:inherit;outline:none;transition:border-color .2s}
+    .ti::placeholder{color:var(--dim)}
     .ti:focus{border-color:var(--pk,var(--acc))}
     .eg{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-    .eo{aspect-ratio:1;border-radius:11px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;}
-    .eo.sel{border:1.5px solid var(--acc);background:var(--acc-g)}
+    .eo{aspect-ratio:1;border-radius:11px;background:var(--card2);border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:transform .12s}
+    .eo:active{transform:scale(.87)}
+    .eo.sel{border-color:var(--pk,var(--acc));background:rgba(124,111,255,.12)}
     .cr{display:flex;gap:9px;flex-wrap:wrap}
-    .co{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;}
+    .co{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;position:relative;transition:transform .12s}
+    .co:active{transform:scale(.87)}
     .co.sel{border-color:#fff}
     .co.sel::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#0c0c12}
     .ma{display:flex;gap:9px;margin-top:20px}
-    .btn{flex:1;padding:13px;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;border:none;}
+    .btn{flex:1;padding:13px;border-radius:13px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:transform .12s,opacity .2s}
+    .btn:active{transform:scale(.97)}
     .btn-p{background:var(--pk,var(--acc));color:#0c0c12}
-    .btn-p:disabled{opacity: 0.5; cursor:not-allowed;}
+    .btn-p:disabled{opacity:.4;cursor:not-allowed}
     .btn-g{background:var(--card2);color:var(--sec)}
-    .btn-d{background:#ff6b7a;color:#fff}
-    
-    .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:12px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:all .28s;}
+    .btn-d{background:var(--danger);color:#fff}
+    .del-icon{font-size:36px;margin-bottom:10px}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card2);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:12px;font-weight:600;padding:10px 18px;border-radius:99px;z-index:200;opacity:0;pointer-events:none;transition:all .28s;white-space:nowrap}
     .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-    .empty{text-align:center;padding:36px 20px;color:var(--dim)}
   </style>
 </head>
 <body>
+<div class="ht">
 
-<div class="ht" id="ht">
   <!-- HEADER -->
   <div class="hd">
-    <div class="hd-left">
-      <div class="eyebrow" id="eyebrow">Yuklanmoqda...</div>
-      <div class="htitle">Odatlar <span style="font-size:22px">🎯</span>
-        <div class="add-b" id="btnOpenAddModal">＋</div>
+    <div>
+      <div class="eyebrow" id="eyebrow">Bugungi kun</div>
+      <div class="htitle">
+        Odatlar <span style="font-size:22px">🎯</span>
+        <div class="add-b" id="btnAdd">＋</div>
       </div>
       <div class="dstr" id="dstr"></div>
     </div>
@@ -157,44 +196,41 @@
     </div>
   </div>
 
-  <!-- STATUS BAR -->
+  <!-- SYNC BADGE -->
+  <div class="sync-badge" id="syncBadge">
+    <span class="spin">⟳</span> <span id="syncText">Sinxronlanmoqda...</span>
+  </div>
+
+  <!-- STATUS -->
   <div class="st-bar">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <h2 id="stit">Boshlaylik! 💪</h2>
-        <p>Bajarildi: <strong id="dc">0</strong> / <strong id="tc">0</strong></p>
-      </div>
-    </div>
+    <h2 id="stit">Boshlaylik! 💪</h2>
+    <p>Bajarildi: <strong id="dc">0</strong> / <strong id="tc">0</strong></p>
     <div class="prog-t"><div class="prog-f" id="pf"></div></div>
   </div>
 
   <div class="sl">BUGUNGI VAZIFALAR</div>
   <div class="cl" id="hl"></div>
 
-  <!-- BANNER -->
   <div style="height:14px"></div>
   <div class="banner" id="ban">
-    <div class="bi">🏆</div>
-    <div><h3>Barcha odatlar bajarildi!</h3><p>Bugun siz g'olib bo'ldingiz 🎉</p></div>
+    <div style="font-size:24px">🏆</div>
+    <div><h3 style="font-size:14px;font-weight:700">Barcha odatlar bajarildi!</h3><p style="font-size:11px;color:rgba(255,255,255,.7)">Bugun siz g'olib bo'ldingiz 🎉</p></div>
   </div>
 
   <div class="div"></div>
 
-  <!-- CALENDAR & STATS -->
+  <!-- STATS -->
   <div class="gs">
-    <div class="tabs" id="tabContainer">
+    <div class="tabs-row" id="tabRow">
       <div class="tab active" data-tab="oylik">Oylik</div>
       <div class="tab" data-tab="haftalik">Haftalik</div>
       <div class="tab" data-tab="yillik">Yillik</div>
     </div>
-    
-    <div class="gh"><div class="gt" id="monthNameTitle">Statistika</div></div>
-    
-    <div id="statsView">
-      <div class="cal-grid" id="calGrid"></div>
-    </div>
+    <div class="gh"><div class="gt" id="statsTitle">Oylik Statistika</div><div class="gss" id="statsSub"></div></div>
+    <div id="statsView"></div>
   </div>
-</div>
+
+</div><!-- /ht -->
 
 <!-- ADD MODAL -->
 <div class="mo" id="am">
@@ -218,7 +254,7 @@
   <div class="ms">
     <div class="mh"></div>
     <div class="mtit">Izoh yozish 📝</div>
-    <div class="msub">Bugungi natijangiz sababini qayd eting.</div>
+    <div class="msub">Bugungi natijangiz haqida qayd eting.</div>
     <div class="fb"><textarea class="ti" id="cval" rows="3" placeholder="Bugun charchagandim..." style="resize:none"></textarea></div>
     <div class="ma">
       <button class="btn btn-g" id="btnCancelCmt">Bekor</button>
@@ -229,9 +265,9 @@
 
 <!-- DELETE MODAL -->
 <div class="mo" id="dm">
-  <div class="ms" style="text-align:center;">
+  <div class="ms" style="text-align:center">
     <div class="mh"></div>
-    <div style="font-size:36px; margin-bottom:8px;">🗑️</div>
+    <div class="del-icon">🗑️</div>
     <div class="mtit" id="dtit">O'chirilsinmi?</div>
     <div class="msub">Bu amalni qaytarib bo'lmaydi.</div>
     <div class="ma">
@@ -244,222 +280,273 @@
 <div class="toast" id="toast"></div>
 
 <script>
-(async function(){
-  // ⚠️ SHU YERGA SERVERINGIZ LINKINI QO'YING
-  const BACKEND_URL = "https://my-telegram-bot-3772.onrender.com"; 
-  const TELEGRAM_ID = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 5471176468;
+(function(){
+  /* ════════════════════════════════════════
+     CONFIG
+  ════════════════════════════════════════ */
+  // ← serveringiz linkini shu yerga yozing. Bo'sh qolsa — offline rejim.
+  const BACKEND_URL = "";   // masalan: "https://urgutrunclub-bot.onrender.com"
 
+  /* ════════════════════════════════════════
+     TELEGRAM
+  ════════════════════════════════════════ */
+  const tg = window.Telegram?.WebApp;
+  if(tg){ tg.ready(); tg.expand(); }
+  const TG_ID = tg?.initDataUnsafe?.user?.id || null;
+
+  /* ════════════════════════════════════════
+     CONSTANTS
+  ════════════════════════════════════════ */
   const PAL=[
-    {c:'#7c6fff',d:'rgba(124,111,255,.14)'}, {c:'#5de0c5',d:'rgba(93,224,197,.14)'},
-    {c:'#ff6b7a',d:'rgba(255,107,122,.14)'}, {c:'#43e097',d:'rgba(67,224,151,.14)'},
-    {c:'#ffd166',d:'rgba(255,209,102,.14)'}, {c:'#b67cff',d:'rgba(182,124,255,.14)'},
-    {c:'#ff9f5b',d:'rgba(255,159,91,.14)'}, {c:'#4ecdc4',d:'rgba(78,205,196,.14)'}
+    {c:'#7c6fff',d:'rgba(124,111,255,.14)',cb:'rgba(124,111,255,.25)'},
+    {c:'#5de0c5',d:'rgba(93,224,197,.14)', cb:'rgba(93,224,197,.25)'},
+    {c:'#ff6b7a',d:'rgba(255,107,122,.14)',cb:'rgba(255,107,122,.25)'},
+    {c:'#43e097',d:'rgba(67,224,151,.14)', cb:'rgba(67,224,151,.25)'},
+    {c:'#ffd166',d:'rgba(255,209,102,.14)',cb:'rgba(255,209,102,.25)'},
+    {c:'#b67cff',d:'rgba(182,124,255,.14)',cb:'rgba(182,124,255,.25)'},
+    {c:'#ff9f5b',d:'rgba(255,159,91,.14)', cb:'rgba(255,159,91,.25)'},
+    {c:'#4ecdc4',d:'rgba(78,205,196,.14)', cb:'rgba(78,205,196,.25)'},
   ];
   const EM=['🏃‍♂️','💻','🧘','💰','📚','🎨','🎵','💧','🥗','😴','✍️','🚭','🧹','🌱','🙏','🚴','🏋️','🧠','📝','☀️','🎯','🎭'];
+  const DEF_HABITS=[
+    {id:'sport', name:'Sport / Yugurish', desc:'30 daqiqa yugur yoki mashq qil', icon:'🏃‍♂️', color:'#ff6b7a', dim:'rgba(255,107,122,.14)', cb:'rgba(255,107,122,.25)'},
+    {id:'it',    name:'IT / Dasturlash',  desc:'Loyihaga 1 commit yoki 1 soat kod',icon:'💻',  color:'#5de0c5', dim:'rgba(93,224,197,.14)',  cb:'rgba(93,224,197,.25)'},
+    {id:'spirit',name:'Ruhoniyat',        desc:'Namoz, meditation yoki shukrona',  icon:'🧘',  color:'#ffd166', dim:'rgba(255,209,102,.14)',cb:'rgba(255,209,102,.25)'},
+    {id:'finance',name:'Moliya',          desc:'Xarajat va daromadni qayd et',     icon:'💰',  color:'#43e097', dim:'rgba(67,224,151,.14)', cb:'rgba(67,224,151,.25)'},
+  ];
 
   const today=new Date();
-  const dk=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
   const DAYS=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
   const MONTHS=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
 
-  document.getElementById('dstr').textContent=`${DAYS[today.getDay()]}, ${today.getDate()} ${MONTHS[today.getMonth()]} ${today.getFullYear()}`;
-  document.getElementById('monthNameTitle').textContent=`Oylik Statistika (${MONTHS[today.getMonth()]})`;
+  function dkOf(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+  const TODAY=dkOf(today);
 
-  let HABITS = []; 
-  let DM = {};
-  let COMMENTS = {};
-  let MONTHLY_STATS = {};
-  let DONE = new Set();
-  
-  let currentDelId = null;
-  let currentCmtId = null;
-  let pe=EM[0], pc=PAL[0];
+  /* ════════════════════════════════════════
+     LOCAL STORAGE — asosiy xotira
+  ════════════════════════════════════════ */
+  const LS_H=TG_ID?`ht_habits_${TG_ID}`:'ht_habits_local';
+  const LS_D=TG_ID?`ht_done_${TG_ID}`:'ht_done_local';
+  const LS_C=TG_ID?`ht_cmts_${TG_ID}`:'ht_cmts_local';
 
-  async function loadData() {
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/get_habits_data?user_id=${TELEGRAM_ID}`);
-      const data = await res.json();
-      HABITS = (data.habits || []).map(h => ({
-        id: h['Odat ID'], name: h['Nomi'], desc: h['Tavsifi'],
-        icon: h['Emoji'], color: h['Rangi'] || '#7c6fff', dim: (h['Rangi'] || '#7c6fff') + '22'
-      }));
-      DM = data.history || {};
-      COMMENTS = data.comments || {};
-      
-      if(!DM[dk]) DM[dk] = [];
-      DONE.clear(); DM[dk].forEach(id => DONE.add(id));
+  function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
-      try {
-        const statsRes = await fetch(`${BACKEND_URL}/api/get_monthly_stats?user_id=${TELEGRAM_ID}`);
-        const statsData = await statsRes.json();
-        MONTHLY_STATS = statsData.monthly_stats || {};
-      } catch(e) {}
+  function loadHabits(){
+    const h=lsGet(LS_H);
+    if(Array.isArray(h)&&h.length) return h;
+    lsSet(LS_H,DEF_HABITS);
+    return DEF_HABITS.slice();
+  }
+  function loadDone(){const d=lsGet(LS_D);return d&&typeof d==='object'?d:{};}
+  function loadCmts(){const c=lsGet(LS_C);return c&&typeof c==='object'?c:{};}
 
-      document.getElementById('eyebrow').textContent = "Bugungi kun";
-      render(); updateUI(); buildCalendar();
-    } catch(e) {
-      document.getElementById('eyebrow').textContent = "Tarmoq xatosi";
-      toast("Serverga ulanishda xato!");
-    }
+  /* ════════════════════════════════════════
+     STATE
+  ════════════════════════════════════════ */
+  let HABITS=loadHabits();
+  let DM=loadDone();      // {date: [id, id, ...]}
+  let CMTS=loadCmts();    // {date: {id: text}}
+
+  if(!DM[TODAY]) DM[TODAY]=[];
+  const DONE=new Set(DM[TODAY]);
+
+  function persist(){DM[TODAY]=Array.from(DONE);lsSet(LS_D,DM);}
+
+  /* ════════════════════════════════════════
+     DATE STRING
+  ════════════════════════════════════════ */
+  document.getElementById('dstr').textContent=
+    `${DAYS[today.getDay()]}, ${today.getDate()} ${MONTHS[today.getMonth()]} ${today.getFullYear()}`;
+
+  /* ════════════════════════════════════════
+     SYNC BADGE
+  ════════════════════════════════════════ */
+  function showSync(msg=''){
+    const b=document.getElementById('syncBadge');
+    if(msg){document.getElementById('syncText').textContent=msg;b.classList.add('show');}
+    else b.classList.remove('show');
   }
 
-  function render(){
-    const hl=document.getElementById('hl');
-    let htmlBuffer = '';
+  /* ════════════════════════════════════════
+     SERVER FETCH helpers (faqat URL bo'lsa)
+  ════════════════════════════════════════ */
+  async function srvGet(path){
+    if(!BACKEND_URL||!TG_ID) return null;
+    try{const r=await fetch(`${BACKEND_URL}${path}`);return r.ok?await r.json():null;}
+    catch(e){return null;}
+  }
+  async function srvPost(path,body){
+    if(!BACKEND_URL||!TG_ID) return null;
+    try{const r=await fetch(`${BACKEND_URL}${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return r.ok?await r.json():null;}
+    catch(e){return null;}
+  }
+
+  /* ════════════════════════════════════════
+     SERVERDAN YUKLASH (agar URL bo'lsa)
+  ════════════════════════════════════════ */
+  async function syncFromServer(){
+    if(!BACKEND_URL||!TG_ID) return;
+    showSync('Serverdan yuklanmoqda...');
+    const data=await srvGet(`/api/get_habits_data?user_id=${TG_ID}`);
+    if(!data){showSync('Server bilan aloqa yo\'q — lokal rejim');setTimeout(()=>showSync(),3000);return;}
+
+    if(Array.isArray(data.habits)&&data.habits.length){
+      HABITS=data.habits.map(h=>({
+        id:    h['Odat ID']  ||h.id   ||`h_${Date.now()}`,
+        name:  h['Nomi']     ||h.name ||'Odat',
+        desc:  h['Tavsifi']  ||h.desc ||'',
+        icon:  h['Emoji']    ||h.icon ||'🎯',
+        color: h['Rangi']    ||h.color||'#7c6fff',
+        dim:   (PAL.find(p=>p.c===(h['Rangi']||h.color))||PAL[0]).d,
+        cb:    (PAL.find(p=>p.c===(h['Rangi']||h.color))||PAL[0]).cb,
+      }));
+      lsSet(LS_H,HABITS);
+    }
+    if(data.history&&typeof data.history==='object'){
+      // Serverdan kelgan tarixni local bilan birlashtirish
+      Object.keys(data.history).forEach(k=>{
+        if(!DM[k]) DM[k]=data.history[k];
+      });
+      // Bugun uchun serverdagi ma'lumot
+      if(data.history[TODAY]){
+        data.history[TODAY].forEach(id=>DONE.add(id));
+        DM[TODAY]=Array.from(DONE);
+      }
+      lsSet(LS_D,DM);
+    }
+    if(data.comments&&typeof data.comments==='object'){
+      Object.assign(CMTS,data.comments);
+      lsSet(LS_C,CMTS);
+    }
+
+    showSync();
+    render(); updateUI(); buildActiveTab();
+  }
+
+  /* ════════════════════════════════════════
+     RENDER HABITS
+  ════════════════════════════════════════ */
+  const hl=document.getElementById('hl');
+
+  function render(animId){
     document.getElementById('tc').textContent=HABITS.length;
-    
     if(!HABITS.length){
-      hl.innerHTML='<div class="empty"><div style="font-size:32px;margin-bottom:8px">🌱</div><p>Hali odatlar yo\'q.</p></div>';
+      hl.innerHTML='<div class="empty"><div class="ei">🌱</div><p>Hali odatlar yo\'q. "＋" bosing.</p></div>';
       return;
     }
-    
-    const todaysComments = COMMENTS[dk] || {};
-    
+    const todayCmts=CMTS[TODAY]||{};
+    hl.innerHTML='';
     HABITS.forEach(h=>{
-      const isDone = DONE.has(h.id);
-      const hasCmt = todaysComments[h.id] ? 'active-cmt' : '';
-      htmlBuffer += `
-        <div class="hc ${isDone?'done':''}" id="c-${h.id}" data-id="${h.id}" data-name="${esc(h.name)}" style="--cc:${h.color};--cd:${h.dim}">
-          <div class="ci">${h.icon}</div>
-          <div class="cb toggle-target">
-            <div class="cn">${esc(h.name)}</div>
-            <div class="cdesc">${esc(h.desc||'')}</div>
-          </div>
-          <div class="actions">
-            <div class="action-btn del delete-target" title="O'chirish">🗑️</div>
-            <div class="action-btn cmt comment-target ${hasCmt}" title="Izoh">💬</div>
-            <div class="ck toggle-target ${isDone?'on':''}" id="ck-${h.id}"><span class="tk">✓</span></div>
-          </div>
+      const done=DONE.has(h.id);
+      const hasCmt=!!todayCmts[h.id];
+      // Jami nechi kun bajardi
+      const totalDays=Object.values(DM).filter(a=>Array.isArray(a)&&a.includes(h.id)).length;
+
+      const card=document.createElement('div');
+      card.className='hc'+(done?' done':'')+(h.id===animId?' new-card':'');
+      card.id='c-'+h.id;
+      card.dataset.id=h.id;
+      card.dataset.name=h.name;
+      // CSS o'zgaruvchilari
+      card.style.cssText=`--cc:${h.color};--cd:${h.dim};--cc-border:${h.cb||h.color+'44'}`;
+
+      card.innerHTML=`
+        <div class="ci">${h.icon}</div>
+        <div class="cb tgl" data-id="${h.id}">
+          <div class="cn">${esc(h.name)}</div>
+          <div class="cdesc">${esc(h.desc||'')}</div>
+          <div class="csk">🔥 ${totalDays} kunlik faollik</div>
+        </div>
+        <div class="actions">
+          <div class="act-btn del delbtn" data-id="${h.id}" data-name="${esc(h.name)}" title="O'chirish">🗑️</div>
+          <div class="act-btn cmt cmtbtn${hasCmt?' has-cmt':''}" data-id="${h.id}" title="Izoh">💬</div>
+          <div class="ck tgl${done?' on':''}" data-id="${h.id}" id="ck-${h.id}"><span class="tk">✓</span></div>
         </div>`;
+
+      hl.appendChild(card);
     });
-    hl.innerHTML = htmlBuffer;
   }
 
   function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
-  // EVENT DELEGATION (Hamma bosilishlar xavfsiz shu yerda)
-  document.addEventListener('click', async function(e) {
-    // Modal yopish (Fondan bosganda)
-    if(e.target.classList.contains('mo')) {
-        e.target.classList.remove('on');
-        return;
-    }
-    
-    // Toggle (Belgilash)
-    const toggleTarget = e.target.closest('.toggle-target');
-    if (toggleTarget) {
-      const card = toggleTarget.closest('.hc');
-      if(card) await toggleHabit(card.dataset.id);
-      return;
-    }
-    
-    // O'chirish
-    const deleteTarget = e.target.closest('.delete-target');
-    if (deleteTarget) {
-      const card = deleteTarget.closest('.hc');
-      if(card) {
-        currentDelId = card.dataset.id;
-        document.getElementById('dtit').textContent = `"${card.dataset.name}" o'chirilsinmi?`;
-        document.getElementById('dm').classList.add('on');
-      }
-      return;
-    }
-
-    // Komentariya (Izoh)
-    const commentTarget = e.target.closest('.comment-target');
-    if (commentTarget) {
-      const card = commentTarget.closest('.hc');
-      if(card) {
-        currentCmtId = card.dataset.id;
-        const bugungi_izohlar = COMMENTS[dk] || {};
-        document.getElementById('cval').value = bugungi_izohlar[currentCmtId] || ''; 
-        document.getElementById('cm').classList.add('on');
-      }
-      return;
-    }
-
-    // Statistika Tablari
-    const tabTarget = e.target.closest('.tab');
-    if (tabTarget) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      tabTarget.classList.add('active');
-      const tabName = tabTarget.dataset.tab;
-      const sv = document.getElementById('statsView');
-      
-      if(tabName === 'oylik') {
-          document.getElementById('monthNameTitle').textContent = `Oylik Statistika (${MONTHS[today.getMonth()]})`;
-          sv.innerHTML = '<div class="cal-grid" id="calGrid"></div>';
-          buildCalendar();
-      } else if(tabName === 'haftalik') {
-          document.getElementById('monthNameTitle').textContent = 'Haftalik Faollik';
-          const doneAvg = Math.round((MONTHLY_STATS[today.getDate()] || 0) / Math.max(HABITS.length, 1) * 100);
-          sv.innerHTML = `
-            <div class="stat-bar-container">
-              <div class="stat-bar-title">Oxirgi 7 kun (${doneAvg}% o'rtacha)</div>
-              <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:0%"></div></div>
-            </div>`;
-          setTimeout(() => { document.querySelector('.stat-bar-fill').style.width = doneAvg + '%'; }, 50);
-      } else {
-          document.getElementById('monthNameTitle').textContent = 'Yillik Faollik';
-          const totalDone = Object.values(MONTHLY_STATS).reduce((a,b)=>a+b, 0);
-          sv.innerHTML = `
-            <div class="stat-bar-container">
-              <div class="stat-bar-title">Yil davomida jami ${totalDone} marta bajarildi</div>
-              <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:0%"></div></div>
-            </div>`;
-          setTimeout(() => { document.querySelector('.stat-bar-fill').style.width = '30%'; }, 50);
-      }
-      return;
-    }
-
-    // Ikonka (Stiker) tanlash
-    const eoTarget = e.target.closest('.eo');
-    if (eoTarget) {
-      pe = EM[eoTarget.dataset.idx];
-      renderEG();
-      return;
-    }
-
-    // Rang tanlash
-    const coTarget = e.target.closest('.co');
-    if (coTarget) {
-      pc = PAL[coTarget.dataset.idx];
-      renderCR();
-      document.getElementById('ams').style.setProperty('--pk',pc.c);
-      return;
-    }
-  });
-
-  async function toggleHabit(id) {
+  /* ════════════════════════════════════════
+     TOGGLE
+  ════════════════════════════════════════ */
+  async function toggleHabit(id){
     const card=document.getElementById('c-'+id);
     const ck=document.getElementById('ck-'+id);
-    const wasDone = DONE.has(id);
+    if(!card||!ck) return;
 
-    if(wasDone){
-        DONE.delete(id);ck.classList.remove('on');card.classList.remove('done');
-    } else {
+    const wasDone=DONE.has(id);
+    if(wasDone){DONE.delete(id);ck.classList.remove('on');card.classList.remove('done');}
+    else{
       DONE.add(id);ck.classList.add('on');card.classList.add('done');
       const r=document.createElement('div');r.className='rpl';ck.appendChild(r);
       r.addEventListener('animationend',()=>r.remove());
-      try{window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');}catch(e){}
+      try{tg?.HapticFeedback?.impactOccurred('medium');}catch(e){}
     }
-    
-    DM[dk]=Array.from(DONE);
-    const bugun = today.getDate();
-    if(wasDone) MONTHLY_STATS[bugun] = Math.max(0, (MONTHLY_STATS[bugun]||1)-1);
-    else MONTHLY_STATS[bugun] = (MONTHLY_STATS[bugun]||0)+1;
+    persist(); updateUI();
+    if(currTab==='oylik') buildMonthly();
+    else if(currTab==='yillik') buildYearly();
 
-    updateUI(); 
-    if(document.querySelector('.tab.active').dataset.tab === 'oylik') buildCalendar();
-
-    try {
-        await fetch(`${BACKEND_URL}/api/toggle_habit`, {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: id, date: dk })
-        });
-    } catch(e) {}
+    // Serverga yuborish (background)
+    srvPost('/api/toggle_habit',{user_id:TG_ID,odat_id:id,date:TODAY});
   }
 
+  /* ════════════════════════════════════════
+     EVENT DELEGATION
+  ════════════════════════════════════════ */
+  document.addEventListener('click',async function(e){
+    // Modal yopish (overlay bosilsa)
+    if(e.target.classList.contains('mo')){e.target.classList.remove('on');return;}
+
+    // Toggle (checkbox yoki card body)
+    const tgl=e.target.closest('.tgl');
+    if(tgl){await toggleHabit(tgl.dataset.id);return;}
+
+    // O'chirish
+    const del=e.target.closest('.delbtn');
+    if(del){
+      pendingDel=del.dataset.id;
+      document.getElementById('dtit').textContent=`"${del.dataset.name}" o'chirilsinmi?`;
+      document.getElementById('dm').classList.add('on');
+      return;
+    }
+
+    // Izoh
+    const cmt=e.target.closest('.cmtbtn');
+    if(cmt){
+      pendingCmt=cmt.dataset.id;
+      const existing=(CMTS[TODAY]||{})[pendingCmt]||'';
+      document.getElementById('cval').value=existing;
+      document.getElementById('cm').classList.add('on');
+      setTimeout(()=>document.getElementById('cval').focus(),340);
+      return;
+    }
+
+    // Tablar
+    const tab=e.target.closest('.tab');
+    if(tab&&tab.dataset.tab){
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      currTab=tab.dataset.tab;
+      buildActiveTab();
+      return;
+    }
+
+    // Emoji tanlash
+    const eo=e.target.closest('.eo');
+    if(eo){pe=EM[+eo.dataset.i];renderEG();return;}
+
+    // Rang tanlash
+    const co=e.target.closest('.co');
+    if(co){pc=PAL[+co.dataset.i];renderCR();document.getElementById('ams').style.setProperty('--pk',pc.c);return;}
+  });
+
+  /* ════════════════════════════════════════
+     UPDATE UI
+  ════════════════════════════════════════ */
   function updateUI(){
     const tot=HABITS.length,dn=DONE.size;
     const pct=tot?(dn/tot)*100:0;
@@ -470,122 +557,281 @@
     document.getElementById('rnum').textContent=dn;
     document.getElementById('pf').style.width=pct+'%';
     document.getElementById('dc').textContent=dn;
-    const tits=['Boshlaylik! 💪','Ajoyib boshlanish!','Yarim yo\'lda 🚀','Finishga yaqin!','Mukammal kun! 🏆'];
-    document.getElementById('stit').textContent=tot===0?'Odat qo\'shing 🌱':tits[Math.min(Math.round((dn/tot)*4),4)];
+    const T=['Boshlaylik! 💪','Ajoyib boshlanish!','Yarim yo\'lda 🚀','Finishga yaqin!','Mukammal kun! 🏆'];
+    document.getElementById('stit').textContent=tot===0?'Odat qo\'shing 🌱':T[Math.min(Math.round((dn/tot)*4),4)];
     document.getElementById('ban').classList.toggle('on',tot>0&&dn===tot);
   }
 
-  function buildCalendar(){
-    const cg = document.getElementById('calGrid');
-    if(!cg) return;
-    const year = today.getFullYear(), month = today.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDay = new Date(year, month, 1).getDay();
-    const totHabits = Math.max(HABITS.length, 1);
-    
-    let htmlBuffer = '';
-    ['Dsh','Ssh','Chr','Pay','Jum','Shb','Yak'].forEach(day => {
-        htmlBuffer += `<div class="day-lbl">${day}</div>`;
-    });
-    let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
-    for(let i=0; i<emptyCells; i++) htmlBuffer += `<div></div>`;
+  /* ════════════════════════════════════════
+     STATS TABS
+  ════════════════════════════════════════ */
+  let currTab='oylik';
 
-    for(let d=1; d<=daysInMonth; d++) {
-        const doneCount = MONTHLY_STATS[d] || 0;
-        const pct = Math.round((doneCount / totHabits) * 100);
-        let fillStyle = '';
-        if(pct > 0) fillStyle = `background: rgba(124, 111, 255, ${Math.max(0.2, pct / 100)});`;
-        const isToday = d === today.getDate() ? 'today' : '';
-        htmlBuffer += `
-        <div class="cal-cell ${isToday}">
-            <div style="position:absolute; bottom:0; left:0; right:0; height:${pct}%; ${fillStyle} transition: height 0.5s;"></div>
-            <span class="cal-num">${d}</span>
-            ${pct > 0 ? `<span class="cal-pct">${pct}%</span>` : ''}
+  function buildActiveTab(){
+    if(currTab==='oylik') buildMonthly();
+    else if(currTab==='haftalik') buildWeekly();
+    else buildYearly();
+  }
+
+  /* ── OYLIK KALENDAR ── */
+  function buildMonthly(){
+    document.getElementById('statsTitle').textContent=`Oylik Statistika (${MONTHS[today.getMonth()]})`;
+    document.getElementById('statsSub').textContent='';
+    const y=today.getFullYear(),m=today.getMonth();
+    const dim=new Date(y,m+1,0).getDate();
+    const fd=new Date(y,m,1).getDay(); // 0=Yak
+    const tot=Math.max(HABITS.length,1);
+    let html='';
+    ['Du','Se','Ch','Pa','Ju','Sh','Ya'].forEach(d=>{html+=`<div class="day-lbl">${d}</div>`;});
+    const empty=fd===0?6:fd-1;
+    for(let i=0;i<empty;i++) html+=`<div></div>`;
+    for(let d=1;d<=dim;d++){
+      const k=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const cnt=(DM[k]||[]).length;
+      const pct=Math.round((cnt/tot)*100);
+      const fillH=pct;
+      const isT=d===today.getDate()&&m===today.getMonth()?' today':'';
+      html+=`<div class="cal-cell${isT}">
+        <div class="fill" style="height:${fillH}%"></div>
+        <span class="cal-num">${d}</span>
+        ${pct>0?`<span class="cal-pct">${pct}%</span>`:''}
+      </div>`;
+    }
+    document.getElementById('statsView').innerHTML=`<div class="cal-wrap"><div class="cal-grid">${html}</div></div>`;
+  }
+
+  /* ── HAFTALIK ── */
+  function buildWeekly(){
+    document.getElementById('statsTitle').textContent='Haftalik Faollik';
+    document.getElementById('statsSub').textContent='';
+    const tot=Math.max(HABITS.length,1);
+    // So'nggi 7 kun
+    let rows='',streak=0,totalDone=0;
+    for(let i=6;i>=0;i--){
+      const d=new Date(today);d.setDate(d.getDate()-i);
+      const k=dkOf(d);
+      const cnt=(DM[k]||[]).length;
+      const pct=Math.round((cnt/tot)*100);
+      const dayN=DAYS[d.getDay()].slice(0,3);
+      if(cnt>0) streak++;else streak=0;
+      totalDone+=cnt;
+      rows+=`
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:36px;font-size:11px;color:var(--sec);flex-shrink:0">${dayN}</div>
+          <div style="flex:1">
+            <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:var(--acc)"></div></div>
+          </div>
+          <div style="width:32px;text-align:right;font-size:11px;font-weight:700;color:${cnt>0?'var(--acc)':'var(--dim)'}">${pct}%</div>
         </div>`;
     }
-    cg.innerHTML = htmlBuffer;
+    const avgPct=Math.round((totalDone/(7*tot))*100);
+    document.getElementById('statsView').innerHTML=`
+      <div class="stat-card">
+        <div class="stat-label">Kunlik faollik</div>
+        ${rows}
+        <div class="streak-row">
+          <div class="streak-item"><div class="streak-val">${avgPct}%</div><div class="streak-key">O'rtacha</div></div>
+          <div class="streak-item"><div class="streak-val">${totalDone}</div><div class="streak-key">Jami bajarildi</div></div>
+          <div class="streak-item"><div class="streak-val">${streak}🔥</div><div class="streak-key">Streak</div></div>
+        </div>
+      </div>`;
   }
 
-  // MODAL EMOJI VA RANGLARI
+  /* ── YILLIK GRID ── */
+  function buildYearly(){
+    document.getElementById('statsTitle').textContent='Yillik Faollik';
+    const start=new Date(today);
+    start.setDate(start.getDate()-52*7+1);
+    start.setDate(start.getDate()-start.getDay());
+    const totD=Math.round((today-start)/86400000)+7;
+    const wc=Math.ceil(totD/7);
+    const cw=13;
+    const tot=Math.max(HABITS.length,1);
+
+    // Oy nomlari
+    const ms={};const cm=[];
+    for(let c=0;c<wc;c++){const cd=new Date(start);cd.setDate(start.getDate()+c*7);const mk=`${cd.getFullYear()}-${cd.getMonth()}`;if(!ms[mk]){ms[mk]=true;cm.push({c,m:cd.getMonth()});}}
+    let mlHtml='';
+    cm.forEach(({c,m})=>{mlHtml+=`<span class="mc" style="left:${c*cw}px">${'JFMAMJJASOND'[m]}</span>`;});
+
+    // Grid hujayralari
+    let streak=0,tmp=0,gcHtml='';
+    for(let c=0;c<wc;c++){
+      for(let r=0;r<7;r++){
+        const d=new Date(start);d.setDate(start.getDate()+c*7+r);
+        const k=dkOf(d);
+        const isT=k===TODAY,isFut=d>today&&!isT;
+        let cls='gc';
+        if(!isFut){
+          if(isT){
+            cls+=' td';
+            if(DONE.size>0) cls+=' ac';
+            if(DONE.size===HABITS.length&&HABITS.length>0) cls+=' l4';
+            else if(DONE.size/tot>=.66) cls+=' l3';
+            else if(DONE.size/tot>=.33) cls+=' l2';
+            else if(DONE.size>0) cls+=' l1';
+          } else {
+            const cnt=(DM[k]||[]).length;
+            if(cnt/tot>=1) cls+=' l4';
+            else if(cnt/tot>=.66) cls+=' l3';
+            else if(cnt/tot>=.33) cls+=' l2';
+            else if(cnt>0) cls+=' l1';
+            if(cnt>0){tmp++;if(tmp>streak)streak=tmp;}else tmp=0;
+          }
+        }
+        gcHtml+=`<div class="${cls}" title="${d.getDate()} ${MONTHS[d.getMonth()]}"></div>`;
+      }
+    }
+
+    document.getElementById('statsSub').textContent=`${streak} kun ketma-ket 🔥`;
+    document.getElementById('statsView').innerHTML=`
+      <div class="gsc" id="gscInner">
+        <div class="ml-wrap" style="min-width:${wc*cw}px">${mlHtml}</div>
+        <div class="cg">${gcHtml}</div>
+      </div>`;
+    setTimeout(()=>{const g=document.getElementById('gscInner');if(g)g.scrollLeft=g.scrollWidth;},60);
+  }
+
+  /* ════════════════════════════════════════
+     ADD MODAL
+  ════════════════════════════════════════ */
+  let pe=EM[0],pc=PAL[0];
+
   function renderEG(){
-    const eg=document.getElementById('eg'); let h='';
-    EM.forEach((em, i)=>{ h += `<div class="eo${em===pe?' sel':''}" data-idx="${i}">${em}</div>`; });
-    eg.innerHTML = h;
+    document.getElementById('eg').innerHTML=
+      EM.map((em,i)=>`<div class="eo${em===pe?' sel':''}" data-i="${i}">${em}</div>`).join('');
   }
   function renderCR(){
-    const cr=document.getElementById('cr'); let h='';
-    PAL.forEach((p, i)=>{ h += `<div class="co${p.c===pc.c?' sel':''}" data-idx="${i}" style="background:${p.c}"></div>`; });
-    cr.innerHTML = h;
+    document.getElementById('cr').innerHTML=
+      PAL.map((p,i)=>`<div class="co${p.c===pc.c?' sel':''}" data-i="${i}" style="background:${p.c}"></div>`).join('');
   }
 
-  // TUGMALAR ISHINI BOG'LASH
-  document.getElementById('btnOpenAddModal').addEventListener('click', () => {
-    document.getElementById('iname').value=''; document.getElementById('idesc').value='';
-    pe=EM[Math.floor(Math.random()*EM.length)]; pc=PAL[HABITS.length%PAL.length];
-    renderEG(); renderCR(); document.getElementById('ams').style.setProperty('--pk',pc.c);
+  document.getElementById('btnAdd').addEventListener('click',()=>{
+    document.getElementById('iname').value='';
+    document.getElementById('idesc').value='';
+    pe=EM[Math.floor(Math.random()*EM.length)];
+    pc=PAL[HABITS.length%PAL.length];
+    renderEG(); renderCR();
+    document.getElementById('ams').style.setProperty('--pk',pc.c);
     document.getElementById('btnSaveAdd').disabled=true;
     document.getElementById('am').classList.add('on');
-  });
-  
-  document.getElementById('btnCancelAdd').addEventListener('click', () => document.getElementById('am').classList.remove('on'));
-  
-  document.getElementById('iname').addEventListener('input', e => {
-    document.getElementById('btnSaveAdd').disabled = !e.target.value.trim();
-  });
-  
-  document.getElementById('btnSaveAdd').addEventListener('click', async ()=>{
-    const n=document.getElementById('iname').value.trim(), d=document.getElementById('idesc').value.trim();
-    if(!n) return toast("Nomini kiriting!");
-    const btn = document.getElementById('btnSaveAdd');
-    btn.disabled = true; btn.textContent = "Kuting...";
-    try {
-        const res = await fetch(`${BACKEND_URL}/api/add_custom_habit`, {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ user_id: TELEGRAM_ID, name: n, desc: d, icon: pe, color: pc.c })
-        });
-        if(res.ok) { await loadData(); document.getElementById('am').classList.remove('on'); toast(`"${n}" qo'shildi ✅`); }
-    } catch(e) { toast("Xatolik!"); }
-    btn.textContent = "Qo'shish";
+    setTimeout(()=>document.getElementById('iname').focus(),340);
   });
 
-  document.getElementById('btnCancelDel').addEventListener('click', () => document.getElementById('dm').classList.remove('on'));
-  document.getElementById('btnConfirmDel').addEventListener('click', async () => {
-    if(!currentDelId) return;
-    const btn = document.getElementById('btnConfirmDel'); btn.textContent = "...";
-    try {
-        await fetch(`${BACKEND_URL}/api/delete_habit`, {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: currentDelId })
-        });
-        await loadData(); document.getElementById('dm').classList.remove('on'); toast(`O'chirildi 🗑️`);
-    } catch(e) { toast("O'chirishda xato!"); }
-    btn.textContent = "O'chirish";
+  document.getElementById('btnCancelAdd').addEventListener('click',()=>document.getElementById('am').classList.remove('on'));
+
+  document.getElementById('iname').addEventListener('input',e=>{
+    document.getElementById('btnSaveAdd').disabled=!e.target.value.trim();
   });
 
-  document.getElementById('btnCancelCmt').addEventListener('click', () => document.getElementById('cm').classList.remove('on'));
-  document.getElementById('btnSaveCmt').addEventListener('click', async () => {
-    const txt = document.getElementById('cval').value.trim();
-    const btn = document.getElementById('btnSaveCmt'); btn.textContent = "...";
-    try {
-        await fetch(`${BACKEND_URL}/api/save_comment`, {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ user_id: TELEGRAM_ID, odat_id: currentCmtId, date: dk, comment: txt })
-        });
-        if(!COMMENTS[dk]) COMMENTS[dk] = {};
-        COMMENTS[dk][currentCmtId] = txt; 
-        render(); 
-        toast("Izoh saqlandi ✅");
-        document.getElementById('cm').classList.remove('on');
-    } catch(e) { toast("Xatolik!"); }
-    btn.textContent = "Saqlash";
+  document.getElementById('btnSaveAdd').addEventListener('click',async()=>{
+    const n=document.getElementById('iname').value.trim();
+    const d=document.getElementById('idesc').value.trim();
+    if(!n) return toast('Nomini kiriting!');
+
+    const btn=document.getElementById('btnSaveAdd');
+    btn.disabled=true;btn.textContent='Saqlanmoqda...';
+
+    // Unique ID yasash
+    const base=n.toLowerCase().replace(/[^\w]/g,'').slice(0,16)||'h';
+    let id=base,n2=1;const ex=new Set(HABITS.map(h=>h.id));
+    while(ex.has(id)) id=base+(n2++);
+
+    const nh={id,name:n,desc:d,icon:pe,color:pc.c,dim:pc.d,cb:pc.cb};
+    HABITS.push(nh);
+    lsSet(LS_H,HABITS);
+    render(nh.id);updateUI();buildActiveTab();
+    document.getElementById('am').classList.remove('on');
+    toast(`"${n}" qo'shildi ✅`);
+    try{tg?.HapticFeedback?.notificationOccurred('success');}catch(e){}
+
+    // Serverga yuborish
+    const res=await srvPost('/api/add_custom_habit',{user_id:TG_ID,name:n,desc:d,icon:pe,color:pc.c});
+    if(res?.status==='success'){ toast(`"${n}" serverga saqlandi ✅`); }
+
+    btn.disabled=false;btn.textContent="Qo'shish";
   });
 
-  let tt; function toast(msg){
-    const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('on');
-    clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('on'),2200);
+  /* ════════════════════════════════════════
+     DELETE
+  ════════════════════════════════════════ */
+  let pendingDel=null;
+
+  document.getElementById('btnCancelDel').addEventListener('click',()=>{document.getElementById('dm').classList.remove('on');pendingDel=null;});
+
+  document.getElementById('btnConfirmDel').addEventListener('click',async()=>{
+    if(!pendingDel) return;
+    const id=pendingDel;
+    const btn=document.getElementById('btnConfirmDel');
+    btn.textContent='...';btn.disabled=true;
+
+    const card=document.getElementById('c-'+id);
+    const name=HABITS.find(h=>h.id===id)?.name||'';
+
+    const finish=()=>{
+      HABITS=HABITS.filter(h=>h.id!==id);
+      DONE.delete(id);
+      lsSet(LS_H,HABITS);persist();
+      render();updateUI();buildActiveTab();
+      toast(`"${name}" o'chirildi 🗑️`);
+    };
+    if(card){card.classList.add('bye');card.addEventListener('animationend',finish,{once:true});}
+    else finish();
+
+    document.getElementById('dm').classList.remove('on');
+    pendingDel=null;
+    btn.textContent="O'chirish";btn.disabled=false;
+
+    srvPost('/api/delete_habit',{user_id:TG_ID,odat_id:id});
+  });
+
+  /* ════════════════════════════════════════
+     COMMENT (IZOH)
+  ════════════════════════════════════════ */
+  let pendingCmt=null;
+
+  document.getElementById('btnCancelCmt').addEventListener('click',()=>{document.getElementById('cm').classList.remove('on');pendingCmt=null;});
+
+  document.getElementById('btnSaveCmt').addEventListener('click',async()=>{
+    if(!pendingCmt) return;
+    const txt=document.getElementById('cval').value.trim();
+    const btn=document.getElementById('btnSaveCmt');
+    btn.textContent='...';btn.disabled=true;
+
+    if(!CMTS[TODAY]) CMTS[TODAY]={};
+    CMTS[TODAY][pendingCmt]=txt;
+    lsSet(LS_C,CMTS);
+    render();
+    toast('Izoh saqlandi ✅');
+    document.getElementById('cm').classList.remove('on');
+    pendingCmt=null;
+    btn.textContent='Saqlash';btn.disabled=false;
+
+    srvPost('/api/save_comment',{user_id:TG_ID,odat_id:pendingCmt,date:TODAY,comment:txt});
+  });
+
+  /* ════════════════════════════════════════
+     TOAST
+  ════════════════════════════════════════ */
+  let tt;
+  function toast(msg){
+    const el=document.getElementById('toast');
+    el.textContent=msg;el.classList.add('on');
+    clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),2400);
   }
 
-  loadData();
+  /* ════════════════════════════════════════
+     INIT
+  ════════════════════════════════════════ */
+  render();
+  updateUI();
+  buildMonthly(); // default tab = oylik
+
+  // Agar server URL berilgan bo'lsa — background sync
+  if(BACKEND_URL&&TG_ID){
+    syncFromServer();
+  }
+
 })();
 </script>
 </body>
